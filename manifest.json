@@ -1,0 +1,9 @@
+{
+  "name": "All in One M3U Generator V2",
+  "short_name": "M3U Generator V2",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#070b16",
+  "theme_color": "#08101f",
+  "icons": []
+}
