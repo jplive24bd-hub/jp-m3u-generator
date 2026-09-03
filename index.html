@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08101f">
+<link rel="manifest" href="manifest.json">
+<title>All in One M3U Generator V2</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#070b16;color:#eef3ff}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 14px;background:#18243a;color:#fff}button.primary{background:#2563eb}button.danger{background:#b42318}
+.app{display:grid;grid-template-columns:235px 1fr;min-height:100vh}.side{background:#0b1220;border-right:1px solid #1d2a40;padding:18px}.brand{font-weight:800;font-size:20px;margin-bottom:22px}.nav button{width:100%;text-align:left;margin:4px 0;background:transparent}.nav button.active,.nav button:hover{background:#17243a}
+.main{padding:20px;max-width:1500px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:15px}.top h1{margin:0;font-size:25px}.actions{display:flex;gap:8px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:15px}.stat{background:#0d1627;border:1px solid #1b2a42;padding:15px;border-radius:15px}.stat b{font-size:24px;display:block}.muted{color:#8fa1bc;font-size:13px}
+.card{background:#0d1627;border:1px solid #1b2a42;border-radius:16px;padding:16px;margin-bottom:15px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+label{font-size:12px;color:#9fb0ca;display:block;margin-bottom:5px}input,select,textarea{width:100%;background:#080f1c;color:#eef3ff;border:1px solid #263752;border-radius:10px;padding:11px;outline:none}textarea{min-height:180px;resize:vertical}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.channel{display:grid;grid-template-columns:45px 55px 1fr auto;gap:10px;align-items:center;padding:10px;border-bottom:1px solid #19263b}.channel:last-child{border-bottom:0}.logo{width:48px;height:48px;object-fit:contain;background:#07101d;border-radius:10px;border:1px solid #25344d}.drag{cursor:grab;color:#7587a3;font-size:20px}.pill{font-size:11px;background:#17243a;padding:5px 8px;border-radius:999px;color:#b8c7dc}.empty{padding:35px;text-align:center;color:#8fa1bc}
+.modal{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;padding:15px;z-index:20}.modal.show{display:flex}.modalbox{background:#0d1627;border:1px solid #2a3c59;border-radius:18px;padding:18px;width:min(650px,100%);max-height:92vh;overflow:auto}.preview{display:flex;align-items:center;gap:12px;margin-top:10px}.preview img{width:65px;height:65px;object-fit:contain;border:1px solid #263752;border-radius:10px;background:#080f1c}
+.tab{display:none}.tab.active{display:block}.drop{border:2px dashed #2c4363;padding:25px;text-align:center;border-radius:14px}.small{font-size:12px}.success{color:#61d095}.error{color:#ff8c8c}
+@media(max-width:800px){.app{display:block}.side{position:sticky;top:0;z-index:10;border-right:0;border-bottom:1px solid #1d2a40;padding:10px}.brand{display:inline-block;margin:0 15px 0 0}.nav{display:inline-flex;overflow:auto;vertical-align:middle;max-width:72%}.nav button{width:auto;white-space:nowrap}.main{padding:12px}.stats{grid-template-columns:repeat(2,1fr)}.grid,.grid3{grid-template-columns:1fr}.channel{grid-template-columns:28px 48px 1fr}.channel .tools{grid-column:3}.top{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <div class="brand">📺 M3U Generator <span class="pill">V2</span></div>
+  <div class="nav">
+    <button class="active" data-tab="editor">✏️ Editor</button>
+    <button data-tab="create">➕ Create</button>
+    <button data-tab="logo">🖼️ Logo Manager</button>
+    <button data-tab="tools">🛠️ Tools</button>
+    <button data-tab="export">📤 Export</button>
+  </div>
+</aside>
+<main class="main">
+<div class="top"><h1 id="title">Playlist Editor</h1><div class="actions"><button onclick="document.getElementById('file').click()">📂 Import File</button><button class="primary" onclick="openEditor()">➕ Add Channel</button><input id="file" type="file" accept=".m3u,.m3u8,.txt" hidden></div></div>
+
+<section id="editor" class="tab active">
+<div class="stats"><div class="stat"><b id="sChannels">0</b><span class="muted">Channels</span></div><div class="stat"><b id="sGroups">0</b><span class="muted">Groups</span></div><div class="stat"><b id="sLogos">0</b><span class="muted">With Logo</span></div><div class="stat"><b id="sBad">0</b><span class="muted">Invalid URL</span></div><div class="stat"><b id="sDead" style="color:#ff8c8c">0</b><span class="muted">Dead</span></div></div>
+<div class="card"><div class="grid3"><div><label>Search</label><input id="search" placeholder="Channel name / URL / group"></div><div><label>Group</label><select id="groupFilter"><option value="">All Groups</option></select></div><div><label>Playlist Title</label><input id="playlistTitle" value="My M3U Playlist"></div></div>
+<div class="row" style="margin-top:10px"><label class="small" style="display:flex;align-items:center;gap:6px;margin:0"><input type="checkbox" id="onlyDead" style="width:auto"> শুধু Dead চ্যানেল দেখাও</label></div></div>
+<div class="card"><div id="list"></div></div>
+</section>
+
+<section id="create" class="tab">
+<div class="card"><h2>Import / Create from Text or URL</h2>
+<div class="drop" id="drop">Drop an M3U file here<br><span class="muted">or use the buttons below</span><div class="row" style="justify-content:center;margin-top:12px"><button onclick="file.click()">Choose File</button><button onclick="openUrl()">Import M3U URL</button></div></div>
+<label style="margin-top:14px">Paste M3U / M3U8 text</label><textarea id="raw" placeholder="#EXTM3U&#10;#EXTINF:-1 group-title=&quot;News&quot;,Channel Name&#10;https://example.com/live.m3u8"></textarea>
+<div class="row" style="margin-top:10px"><button class="primary" onclick="parseRaw()">Parse & Add</button><button onclick="document.getElementById('raw').value=''">Clear</button></div>
+<p class="small muted">URL import works when the source allows browser CORS. GitHub Raw links usually work; if a server blocks CORS, download the M3U file and import it instead.</p>
+</div>
+</section>
+
+<section id="logo" class="tab">
+<div class="card"><h2>🖼️ Logo Manager</h2>
+<p class="muted">Logo URL অবশ্যই public HTTPS image URL হওয়া ভালো। Local file path বা file:// URL অন্য ডিভাইসে কাজ করবে না।</p>
+<div class="grid">
+<div><label>Channel</label><select id="logoChannel"></select></div>
+<div><label>Logo URL</label><input id="logoUrl" placeholder="https://.../logo.png"></div>
+</div>
+<div class="preview"><img id="logoPreview" src="" alt=""><span id="logoStatus" class="muted">Preview</span></div>
+<div class="row" style="margin-top:12px"><button class="primary" onclick="saveLogo()">Save Logo</button><button onclick="convertGithub()">Convert GitHub → Raw</button><button onclick="searchLogo()">🔎 Search Logo</button></div>
+<hr style="border-color:#1b2a42;margin:18px 0">
+<h3>GitHub Logo URL বানানোর সহজ নিয়ম</h3>
+<p class="small">Repository-তে PNG/JPG আপলোড → ছবির GitHub page খুলুন → <b>Raw</b> চাপুন → address bar-এর URL কপি করুন। অথবা নিচের মতো GitHub blob URL paste করে Convert চাপুন।</p>
+<p class="small muted">উদাহরণ: github.com/user/repo/blob/main/logos/ntv.png → raw.githubusercontent.com/user/repo/main/logos/ntv.png</p>
+</div>
+</section>
+
+<section id="tools" class="tab">
+<div class="card"><h2>🛠️ Playlist Tools</h2><div class="row"><button onclick="removeDup()">Remove Duplicate URLs</button><button onclick="sortAZ()">Sort A-Z</button><button onclick="validate()">Validate URLs</button><button onclick="exportJSON()">Backup JSON</button><button onclick="importJSON()">Restore JSON</button><input id="jsonFile" type="file" accept=".json" hidden></div></div>
+<div class="card"><h3>🔍 Dead Channel Checker</h3><p class="small muted">প্রতিটা চ্যানেলের স্ট্রিম URL-এ রিকোয়েস্ট পাঠিয়ে যাচাই করা হবে সাড়া দিচ্ছে কিনা। কিছু সার্ভার ব্রাউজার থেকে CORS ব্লক করে রাখে — সেসব চ্যানেল সম্পূর্ণ dead না হলেও "অজানা" দেখাবে, কারণ ব্রাউজার থেকে ১০০% নিশ্চিত করা যায় না। চ্যানেল সংখ্যা বেশি হলে একটু সময় লাগবে।</p><div class="row"><button class="primary" onclick="checkDead()">🔍 Check Dead Channels</button><button onclick="$('onlyDead').checked=true;render();document.querySelector('[data-tab=editor]').click()">শুধু Dead দেখাও</button></div><div id="deadProgress" class="small muted" style="margin-top:8px"></div></div>
+<div class="card"><h3>Bulk Search / Replace</h3><div class="grid"><input id="find" placeholder="Find"><input id="replace" placeholder="Replace with"></div><button style="margin-top:10px" onclick="bulkReplace()">Apply to names, groups and URLs</button></div>
+</section>
+
+<section id="export" class="tab">
+<div class="card"><h2>📤 Generate M3U</h2><div class="grid"><div><label>Playlist Title</label><input id="exportTitle"></div><div><label>Header extra (optional)</label><input id="headerExtra" placeholder="e.g. x-tvg-url=&quot;https://.../epg.xml&quot;"></div></div><label style="margin-top:10px">Generated M3U</label><textarea id="output" readonly></textarea><div class="row" style="margin-top:10px"><button class="primary" onclick="generate()">Generate</button><button onclick="copyOutput()">Copy</button><button onclick="downloadM3U()">Download .m3u</button><button onclick="shareOutput()">Share</button></div>
+<hr style="border-color:#1b2a42;margin:18px 0">
+<h3>Private GitHub Gist</h3><p class="small muted">এই অ্যাপ সরাসরি private Gist তৈরি করতে চাইলে GitHub token প্রয়োজন। নিরাপত্তার জন্য token এই অ্যাপ localStorage-এ save করে না।</p>
+<input id="gistToken" type="password" placeholder="GitHub token (gist permission)">
+<input id="gistFilename" value="playlist.m3u" style="margin-top:8px">
+<button class="primary" style="margin-top:8px" onclick="createGist()">Create Private Gist</button>
+<div id="gistResult" class="small" style="margin-top:8px"></div>
+</div>
+</section>
+</main></div>
+
+<div class="modal" id="modal"><div class="modalbox">
+<h2 id="modalTitle">Add Channel</h2>
+<div class="grid">
+<div><label>Name</label><input id="fName"></div><div><label>Group</label><input id="fGroup" value="Channels"></div>
+<div><label>Logo URL</label><input id="fLogo"></div><div><label>TVG ID</label><input id="fTvg"></div>
+<div><label>Language</label><input id="fLang" placeholder="Bangla"></div><div><label>Country</label><input id="fCountry" placeholder="BD"></div>
+<div><label>User-Agent</label><input id="fUA"></div><div><label>Referer</label><input id="fRef"></div>
+</div>
+<label style="margin-top:10px">Stream URL</label><input id="fUrl">
+<div class="row" style="justify-content:flex-end;margin-top:14px"><button onclick="closeEditor()">Cancel</button><button class="primary" onclick="saveChannel()">Save</button></div>
+</div></div>
+<script>
+let channels=[], editIndex=-1;
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem('aio_m3u_v2',JSON.stringify({channels,title:$('playlistTitle').value}))}
+function load(){try{let x=JSON.parse(localStorage.getItem('aio_m3u_v2')||'{}');channels=x.channels||[];$('playlistTitle').value=x.title||'My M3U Playlist'}catch(e){channels=[]}}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function parseAttrs(s){let o={}, re=/([\w-]+)=(?:"([^"]*)"|'([^']*)'|([^\s]*))/g,m;while(m=re.exec(s))o[m[1]]=m[2]??m[3]??m[4]??'';return o}
+function parseM3U(text){let lines=text.replace(/\r/g,'').split('\n'), out=[];for(let i=0;i<lines.length;i++){let l=lines[i].trim();if(!l.startsWith('#EXTINF'))continue;let comma=l.indexOf(',');let attrs=parseAttrs(l.slice(7,comma<0?l.length:comma));let name=comma>=0?l.slice(comma+1).trim():(attrs['tvg-name']||'Unnamed');let url='';for(let j=i+1;j<lines.length;j++){let q=lines[j].trim();if(q&&!q.startsWith('#')){url=q;i=j;break}}if(url)out.push({name,group:attrs['group-title']||'Channels',logo:attrs['tvg-logo']||'',tvg:attrs['tvg-id']||'',lang:attrs['tvg-language']||'',country:attrs['tvg-country']||'',ua:'',ref:'',url})}return out}
+function addParsed(text){let p=parseM3U(text);channels.push(...p);save();render();alert(p.length+' channels imported.')}
+$('file').addEventListener('change',async e=>{let f=e.target.files[0];if(f)addParsed(await f.text());e.target.value=''});
+$('drop').addEventListener('dragover',e=>{e.preventDefault();$('drop').style.opacity=.7});$('drop').addEventListener('dragleave',()=>$('drop').style.opacity=1);$('drop').addEventListener('drop',async e=>{e.preventDefault();$('drop').style.opacity=1;let f=e.dataTransfer.files[0];if(f)addParsed(await f.text())});
+async function openUrl(){let u=prompt('M3U URL দিন:');if(!u)return;try{let r=await fetch(u);if(!r.ok)throw Error('HTTP '+r.status);addParsed(await r.text())}catch(e){alert('URL fetch failed. CORS blocked হতে পারে।\n\n'+e.message)}}
+function openEditor(i=-1){editIndex=i;let c=i>=0?channels[i]:{};$('modalTitle').textContent=i>=0?'Edit Channel':'Add Channel';$('fName').value=c.name||'';$('fGroup').value=c.group||'Channels';$('fLogo').value=c.logo||'';$('fTvg').value=c.tvg||'';$('fLang').value=c.lang||'';$('fCountry').value=c.country||'';$('fUA').value=c.ua||'';$('fRef').value=c.ref||'';$('fUrl').value=c.url||'';$('modal').classList.add('show')}
+function closeEditor(){$('modal').classList.remove('show')}
+function saveChannel(){let c={name:$('fName').value.trim()||'Unnamed',group:$('fGroup').value.trim()||'Channels',logo:$('fLogo').value.trim(),tvg:$('fTvg').value.trim(),lang:$('fLang').value.trim(),country:$('fCountry').value.trim(),ua:$('fUA').value.trim(),ref:$('fRef').value.trim(),url:$('fUrl').value.trim()};if(!c.url)return alert('Stream URL দিন');if(editIndex>=0)channels[editIndex]=c;else channels.push(c);save();render();closeEditor()}
+function del(i){if(confirm('Delete this channel?')){channels.splice(i,1);save();render()}}
+function move(from,to){if(to<0||to>=channels.length)return;let x=channels.splice(from,1)[0];channels.splice(to,0,x);save();render()}
+function statusBadge(s){if(s==='alive')return '<span class="pill" style="background:#173a24;color:#61d095">✅ Live</span>';if(s==='dead')return '<span class="pill" style="background:#3a1717;color:#ff8c8c">❌ Dead</span>';if(s==='unknown')return '<span class="pill" style="background:#1a2438;color:#b8c7dc">❔ অজানা</span>';return ''}
+function render(){let q=$('search').value.toLowerCase(),g=$('groupFilter').value,onlyDead=$('onlyDead').checked;let groups=[...new Set(channels.map(x=>x.group||'Channels'))].sort();$('groupFilter').innerHTML='<option value="">All Groups</option>'+groups.map(x=>`<option ${x===g?'selected':''}>${esc(x)}</option>`).join('');let visible=channels.map((c,i)=>({...c,i})).filter(c=>(!q||Object.values(c).join(' ').toLowerCase().includes(q))&&(!g||c.group===g)&&(!onlyDead||c.status==='dead'));$('list').innerHTML=visible.length?visible.map(c=>`<div class="channel" draggable="true" ondragstart="dragFrom=${c.i}" ondragover="event.preventDefault()" ondrop="move(dragFrom,${c.i})"><span class="drag">☷</span><img class="logo" src="${esc(c.logo)}" onerror="this.style.opacity=.25" alt=""><div><b>${esc(c.name)}</b><div class="row"><span class="pill">${esc(c.group||'Channels')}</span>${c.lang?`<span class="pill">${esc(c.lang)}</span>`:''}${statusBadge(c.status)}</div><div class="muted small">${esc(c.url)}</div></div><div class="tools row"><button onclick="move(${c.i},${c.i-1})">↑</button><button onclick="move(${c.i},${c.i+1})">↓</button><button onclick="openEditor(${c.i})">Edit</button><button class="danger" onclick="del(${c.i})">Delete</button></div></div>`).join(''):'<div class="empty">No channels. Import an M3U or add a channel.</div>';updateStats();updateLogoSelect()}
+function updateStats(){$('sChannels').textContent=channels.length;$('sGroups').textContent=new Set(channels.map(c=>c.group||'Channels')).size;$('sLogos').textContent=channels.filter(c=>c.logo).length;$('sBad').textContent=channels.filter(c=>!/^https?:\/\//i.test(c.url||'')).length;$('sDead').textContent=channels.filter(c=>c.status==='dead').length}
+function updateLogoSelect(){let old=$('logoChannel').value;$('logoChannel').innerHTML=channels.map((c,i)=>`<option value="${i}">${esc(c.name)}</option>`).join('');if(old)$('logoChannel').value=old;loadLogo()}
+$('logoChannel').onchange=loadLogo;function loadLogo(){let i=+$('logoChannel').value,c=channels[i];if(!c)return;$('logoUrl').value=c.logo||'';$('logoPreview').src=c.logo||'';$('logoStatus').textContent=c.logo?'Preview loaded':'No logo URL'}
+$('logoUrl').oninput=()=>{$('logoPreview').src=$('logoUrl').value;$('logoStatus').textContent='Preview'}
+function saveLogo(){let i=+$('logoChannel').value;if(!channels[i])return;channels[i].logo=$('logoUrl').value.trim();save();render();alert('Logo saved')}
+function githubRaw(u){let m=u.match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.+)$/);return m?`https://raw.githubusercontent.com/${m[1]}/${m[2]}/${m[3]}/${m[4]}`:u}
+function convertGithub(){$('logoUrl').value=githubRaw($('logoUrl').value.trim());$('logoPreview').src=$('logoUrl').value}
+function searchLogo(){let c=channels[+$('logoChannel').value];if(!c)return;window.open('https://www.google.com/search?tbm=isch&q='+encodeURIComponent(c.name+' official logo png'),'_blank')}
+function parseRaw(){let t=$('raw').value.trim();if(t)addParsed(t);else alert('M3U text paste করুন')}
+function removeDup(){let seen=new Set();channels=channels.filter(c=>{if(seen.has(c.url))return false;seen.add(c.url);return true});save();render()}
+function sortAZ(){channels.sort((a,b)=>a.name.localeCompare(b.name));save();render()}
+function validate(){let bad=channels.filter(c=>!/^https?:\/\//i.test(c.url||''));alert(bad.length?'Invalid URL channels: '+bad.map(x=>x.name).join(', '):'সব Stream URL syntax ঠিক আছে।')}
+function bulkReplace(){let a=$('find').value,b=$('replace').value;if(!a)return;channels=channels.map(c=>{for(let k of ['name','group','logo','tvg','lang','country','ua','ref','url'])c[k]=(c[k]||'').split(a).join(b);return c});save();render()}
+function generate(){let lines=['#EXTM3U'+($('headerExtra').value.trim()?' '+$('headerExtra').value.trim():'')];for(let c of channels){let attrs=[`tvg-id="${c.tvg||''}"`,`tvg-name="${c.name||''}"`,`tvg-logo="${c.logo||''}"`,`group-title="${c.group||'Channels'}"`];if(c.lang)attrs.push(`tvg-language="${c.lang}"`);if(c.country)attrs.push(`tvg-country="${c.country}"`);lines.push('#EXTINF:-1 '+attrs.join(' ')+','+c.name);if(c.ua)lines.push('#EXTVLCOPT:http-user-agent='+c.ua);if(c.ref)lines.push('#EXTVLCOPT:http-referrer='+c.ref);lines.push(c.url)}$('output').value=lines.join('\n');$('exportTitle').value=$('playlistTitle').value}
+function copyOutput(){if(!$('output').value)generate();navigator.clipboard.writeText($('output').value).then(()=>alert('Copied'))}
+function downloadM3U(){if(!$('output').value)generate();let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([$('output').value],{type:'audio/x-mpegurl'}));a.download=(($('exportTitle').value||'playlist').replace(/[^\w-]+/g,'_'))+'.m3u';a.click()}
+async function shareOutput(){if(!$('output').value)generate();if(navigator.share)await navigator.share({title:'M3U Playlist',text:$('output').value});else copyOutput()}
+function exportJSON(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({version:2,title:$('playlistTitle').value,channels},null,2)],{type:'application/json'}));a.download='m3u-generator-backup.json';a.click()}
+function importJSON(){$('jsonFile').click()}$('jsonFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;let x=JSON.parse(await f.text());channels=x.channels||[];$('playlistTitle').value=x.title||'My M3U Playlist';save();render()}
+async function createGist(){if(!$('output').value)generate();let token=$('gistToken').value.trim();if(!token)return alert('GitHub token দিন');let filename=$('gistFilename').value.trim()||'playlist.m3u';let r=await fetch('https://api.github.com/gists',{method:'POST',headers:{Authorization:'Bearer '+token,Accept:'application/vnd.github+json','Content-Type':'application/json'},body:JSON.stringify({description:$('playlistTitle').value,public:false,files:{[filename]:{content:$('output').value}}})});let x=await r.json();if(!r.ok)return $('gistResult').innerHTML='<span class="error">'+esc(x.message||'Gist failed')+'</span>';$('gistResult').innerHTML='<span class="success">Private Gist created: <a target="_blank" href="'+esc(x.html_url)+'">'+esc(x.html_url)+'</a></span>';$('gistToken').value=''}
+$('search').oninput=render;$('groupFilter').onchange=render;$('onlyDead').onchange=render;
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));$(b.dataset.tab).classList.add('active');$('title').textContent=b.textContent.replace(/^[^ ]+ /,'')});
+load();render();$('exportTitle').value=$('playlistTitle').value;
+async function checkOne(url){
+if(!url)return 'dead';
+try{
+const c=new AbortController();const t=setTimeout(()=>c.abort(),8000);
+let r=await fetch(url,{method:'GET',mode:'cors',signal:c.signal,headers:{Range:'bytes=0-1'}});
+clearTimeout(t);
+return r.ok?'alive':'dead'
+}catch(e){
+try{
+const c2=new AbortController();const t2=setTimeout(()=>c2.abort(),8000);
+await fetch(url,{method:'GET',mode:'no-cors',signal:c2.signal});
+clearTimeout(t2);
+return 'unknown'
+}catch(e2){return 'dead'}
+}
+}
+async function checkDead(){
+if(!channels.length)return alert('কোনো চ্যানেল নেই');
+let total=channels.length,done=0,idx=0;
+$('deadProgress').textContent='চেক হচ্ছে: 0/'+total;
+async function worker(){
+while(idx<channels.length){
+let i=idx++;
+channels[i].status=await checkOne(channels[i].url);
+done++;
+$('deadProgress').textContent='চেক হচ্ছে: '+done+'/'+total;
+render()
+}
+}
+await Promise.all(Array.from({length:5},worker));
+save();
+let deadCount=channels.filter(c=>c.status==='dead').length;
+let unknownCount=channels.filter(c=>c.status==='unknown').length;
+$('deadProgress').textContent='সম্পন্ন — Dead: '+deadCount+', অজানা(CORS): '+unknownCount+', মোট: '+total
+}
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body></html>
