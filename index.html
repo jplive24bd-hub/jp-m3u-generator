@@ -90,8 +90,10 @@ label{font-size:12px;color:#9fb0ca;display:block;margin-bottom:5px}input,select,
 <div><label>Repo (owner/repo)</label><input id="logoGhRepo" placeholder="username/repo-name"></div>
 <div><label>Branch</label><input id="logoGhBranch" value="main"></div>
 </div>
+<div class="row" style="margin-top:8px"><label class="small" style="display:flex;align-items:center;gap:6px;margin:0"><input type="checkbox" id="ghAutoUpload" style="width:auto" checked> গ্যালারি থেকে ছবি বাছলেই অটো GitHub-এ আপলোড করুন</label></div>
+<div class="row" style="margin-top:6px"><label class="small" style="display:flex;align-items:center;gap:6px;margin:0"><input type="checkbox" id="ghRememberToken" style="width:auto"> এই ফোনে Token মনে রাখুন (সুবিধাজনক কিন্তু কম নিরাপদ)</label><button onclick="forgetGhConfig()">🔓 মুছে ফেলুন</button></div>
 <p class="small muted">Token বানাতে: GitHub → Settings → Developer settings → Personal access tokens → Generate new token (classic) → শুধু <b>"repo"</b> (বা public repo হলে "public_repo") পারমিশন টিক দিন। Token কোথাও সেভ হয় না, আপলোডের পর মুছে যাবে।</p>
-<div class="row" style="margin-top:10px"><button class="primary" onclick="uploadLogoToGithub()">☁️ Upload to GitHub</button></div>
+<div class="row" style="margin-top:10px"><button class="primary" onclick="uploadLogoToGithub()">☁️ Upload to GitHub</button><button onclick="migrateAllLogosToGithub()">☁️➡️ আগে থেকে থাকা সব গ্যালারি-লোগো GitHub-এ পাঠান</button></div>
 <hr style="border-color:#1b2a42;margin:18px 0">
 <h3>GitHub Logo URL বানানোর সহজ নিয়ম</h3>
 <p class="small">Repository-তে PNG/JPG আপলোড → ছবির GitHub page খুলুন → <b>Raw</b> চাপুন → address bar-এর URL কপি করুন। অথবা নিচের মতো GitHub blob URL paste করে Convert চাপুন।</p>
@@ -241,7 +243,11 @@ function resizeImageToDataURL(file,maxSize){return new Promise((resolve,reject)=
 function recompressDataUrl(dataUrl,maxSize){return new Promise((resolve,reject)=>{let img=new Image();img.onerror=()=>reject(new Error('bad image'));img.onload=()=>{let w=img.width||maxSize,h=img.height||maxSize;let scale=Math.min(1,maxSize/Math.max(w,h));let cw=Math.max(1,Math.round(w*scale)),ch=Math.max(1,Math.round(h*scale));let canvas=document.createElement('canvas');canvas.width=cw;canvas.height=ch;let ctx=canvas.getContext('2d');ctx.fillStyle='#ffffff';ctx.fillRect(0,0,cw,ch);ctx.drawImage(img,0,0,cw,ch);try{resolve(canvas.toDataURL('image/jpeg',0.5))}catch(e){reject(e)}};img.src=dataUrl})}
 async function recompressAllGalleryLogos(){let idxs=[];for(let i=0;i<channels.length;i++)if((channels[i].logo||'').startsWith('data:'))idxs.push(i);let lib=loadLogoLib();let libKeys=Object.keys(lib).filter(k=>(lib[k]||'').startsWith('data:'));if(!idxs.length&&!libKeys.length)return alert('কোনো গ্যালারি-লোগো (ইনলাইন ছবি) পাওয়া যায়নি');if(!confirm((idxs.length+libKeys.length)+'টা গ্যালারি-লোগো ছোট করে সেভ করা হবে। এগিয়ে যাবেন?'))return;for(let i of idxs){try{channels[i].logo=await recompressDataUrl(channels[i].logo,100)}catch(e){}}for(let k of libKeys){try{lib[k]=await recompressDataUrl(lib[k],100)}catch(e){}}saveLogoLib(lib);save();render();alert('সম্পন্ন — লোগোগুলো ছোট করা হয়েছে')}
 function removeAllGalleryLogos(){let count=0;for(let c of channels)if((c.logo||'').startsWith('data:')){c.logo='';count++}let lib=loadLogoLib();let libCount=0;for(let k of Object.keys(lib))if((lib[k]||'').startsWith('data:')){delete lib[k];libCount++}if(!count&&!libCount)return alert('কোনো গ্যালারি-লোগো পাওয়া যায়নি');if(!confirm((count+libCount)+'টা গ্যালারি-লোগো স্থায়ীভাবে মুছে ফেলা হবে (চ্যানেলগুলো লোগো-হীন হয়ে যাবে)। এগিয়ে যাবেন?'))return;saveLogoLib(lib);save();render();alert(count+'টা চ্যানেল ও '+libCount+'টা লাইব্রেরি-এন্ট্রি থেকে গ্যালারি-লোগো মুছে ফেলা হয়েছে')}
-$('logoUpload').addEventListener('change',async e=>{let f=e.target.files[0];if(!f)return;$('logoStatus').textContent='⏳ ছবি প্রসেস হচ্ছে...';try{let dataUrl=await resizeImageToDataURL(f,120);$('logoUrl').value=dataUrl;$('logoPreview').src=dataUrl;$('logoStatus').textContent='✅ গ্যালারি থেকে লোগো লোড হয়েছে (প্রায় '+Math.round(dataUrl.length/1024)+' KB) — সব জায়গায় দেখানোর জন্য নিচে "Upload to GitHub" চাপুন, অথবা শুধু এই অ্যাপে দেখানোর জন্য "Save as Original Logo" চাপুন'}catch(err){$('logoStatus').textContent='❌ ছবি প্রসেস করতে সমস্যা হয়েছে: '+err.message}e.target.value=''});
+function loadGhConfig(){try{return JSON.parse(localStorage.getItem('jp_gh_config_v1')||'{}')}catch(e){return{}}}
+function saveGhConfig(cfg){try{localStorage.setItem('jp_gh_config_v1',JSON.stringify(cfg))}catch(e){}}
+function forgetGhConfig(){localStorage.removeItem('jp_gh_config_v1');$('logoGhToken').value='';$('logoGhRepo').value='';$('logoGhBranch').value='main';$('ghRememberToken').checked=false;alert('মনে রাখা GitHub তথ্য মুছে ফেলা হয়েছে')}
+(function initGhConfig(){let cfg=loadGhConfig();if(cfg.repo)$('logoGhRepo').value=cfg.repo;if(cfg.branch)$('logoGhBranch').value=cfg.branch;if(cfg.token){$('logoGhToken').value=cfg.token;$('ghRememberToken').checked=true}})();
+$('logoUpload').addEventListener('change',async e=>{let f=e.target.files[0];if(!f)return;$('logoStatus').textContent='⏳ ছবি প্রসেস হচ্ছে...';try{let dataUrl=await resizeImageToDataURL(f,120);$('logoUrl').value=dataUrl;$('logoPreview').src=dataUrl;let repo=$('logoGhRepo').value.trim(),token=$('logoGhToken').value.trim();if($('ghAutoUpload').checked&&repo&&token){$('logoStatus').textContent='✅ ছবি রেডি — এখন GitHub-এ আপলোড হচ্ছে...';await uploadLogoToGithub()}else{$('logoStatus').textContent='✅ ছবি রেডি (প্রায় '+Math.round(dataUrl.length/1024)+' KB) — GitHub-এ আপলোড করতে নিচে Token+Repo দিয়ে "Upload to GitHub" চাপুন (নাহলে এটা ফোনের স্টোরেজে থেকে যাবে)'}}catch(err){$('logoStatus').textContent='❌ ছবি প্রসেস করতে সমস্যা হয়েছে: '+err.message}e.target.value=''});
 async function uploadLogoToGithub(){
 let dataUrl=$('logoUrl').value.trim();
 let m=dataUrl.match(/^data:image\/(\w+);base64,(.+)$/);
@@ -265,11 +271,44 @@ if(!r.ok){$('logoStatus').textContent='❌ আপলোড ব্যর্থ: '
 let rawUrl='https://raw.githubusercontent.com/'+repo+'/'+branch+'/'+path;
 $('logoUrl').value=rawUrl;
 $('logoPreview').src=rawUrl;
-$('logoStatus').textContent='✅ আপলোড সম্পন্ন — এই লিংক এখন সব জায়গায় দেখাবে। এবার "Save as Original Logo" চেপে সেভ করুন।';
-$('logoGhToken').value=''
+saveGhConfig({repo:repo,branch:branch,token:$('ghRememberToken').checked?token:''});
+if(!$('ghRememberToken').checked)$('logoGhToken').value='';
+$('logoStatus').textContent='✅ GitHub-এ আপলোড সম্পন্ন — এখন এই চ্যানেলের জন্য সেভ হচ্ছে...';
+saveLogo()
 }catch(e){$('logoStatus').textContent='❌ আপলোড ব্যর্থ: '+e.message}
 }
 function searchLogo(){let c=channels[+$('logoChannel').value];if(!c)return;window.open('https://www.google.com/search?tbm=isch&q='+encodeURIComponent(c.name+' official logo png'),'_blank')}
+async function migrateAllLogosToGithub(){
+let token=$('logoGhToken').value.trim();
+let repo=$('logoGhRepo').value.trim().replace(/^\/+|\/+$/g,'');
+let branch=$('logoGhBranch').value.trim()||'main';
+if(!token)return alert('GitHub token দিন');
+if(!repo||repo.split('/').length!==2)return alert('Repo নাম সঠিকভাবে দিন, যেমন: username/repo-name');
+let targets=[];
+for(let i=0;i<channels.length;i++)if((channels[i].logo||'').startsWith('data:'))targets.push(i);
+if(!targets.length)return alert('স্থানান্তরের মতো কোনো গ্যালারি-লোগো (ইনলাইন ছবি) পাওয়া যায়নি');
+if(!confirm(targets.length+'টা লোগো GitHub-এ পাঠানো হবে, একটু সময় লাগতে পারে। এগিয়ে যাবেন?'))return;
+let ok=0,fail=0;
+for(let idx of targets){
+let dataUrl=channels[idx].logo;
+let m=dataUrl.match(/^data:image\/(\w+);base64,(.+)$/);
+if(!m){fail++;continue}
+let ext=m[1]==='jpeg'?'jpg':m[1];
+let base64=m[2];
+let cname=channels[idx].name||'logo';
+let slug=cname.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')||'logo';
+let path='logos/'+slug+'-'+Date.now()+'-'+idx+'.'+ext;
+try{
+let r=await fetch('https://api.github.com/repos/'+repo+'/contents/'+path,{method:'PUT',headers:{Authorization:'Bearer '+token,Accept:'application/vnd.github+json','Content-Type':'application/json'},body:JSON.stringify({message:'Migrate logo: '+cname,content:base64,branch:branch})});
+if(r.ok){let rawUrl='https://raw.githubusercontent.com/'+repo+'/'+branch+'/'+path;channels[idx].logo=rawUrl;setOriginalLogo(cname,rawUrl);ok++}else fail++
+}catch(e){fail++}
+$('logoStatus').textContent='⏳ স্থানান্তর হচ্ছে... '+(ok+fail)+'/'+targets.length
+}
+saveGhConfig({repo:repo,branch:branch,token:$('ghRememberToken').checked?token:''});
+save();render();
+$('logoStatus').textContent='✅ সম্পন্ন — '+ok+'টা সফল'+(fail?', '+fail+'টা ব্যর্থ':'');
+alert('সম্পন্ন — '+ok+'টা লোগো GitHub-এ স্থানান্তর হয়েছে'+(fail?', '+fail+'টা ব্যর্থ হয়েছে':''))
+}
 function parseRaw(){let t=$('raw').value.trim();if(!t)return alert('M3U text paste করুন');let r=addParsed(t);alert(r.added+' channels imported.'+(r.skipped?' ('+r.skipped+'টা আগে থেকেই ছিল, বাদ দেওয়া হয়েছে)':''))}
 function removeDup(){let seen=new Set();channels=channels.filter(c=>{if(seen.has(c.url))return false;seen.add(c.url);return true});save();render()}
 function sortAZ(){channels.sort((a,b)=>a.name.localeCompare(b.name));save();render()}
