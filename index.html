@@ -1,669 +1,126 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#08101f">
-<link rel="manifest" href="manifest.json">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.6.14/hls.min.js"></script>
-<title>JP ALL IN ONE M3U GENERATOR</title>
-<style>
-*{box-sizing:border-box}html,body{overflow-x:hidden;max-width:100vw}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#070b16;color:#eef3ff}
-button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 14px;background:#18243a;color:#fff}button.primary{background:#2563eb}button.danger{background:#b42318}
-.app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}.side{background:#0b1220;border-right:1px solid #1d2a40;padding:18px}.brand-wrap{display:flex;align-items:center;gap:10px;margin-bottom:22px}.brand-logo{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid #2563eb}.brand{font-weight:800;font-size:15px;line-height:1.2;color:#fff}.brand span{color:#2563eb;display:block;font-size:11px;font-weight:600}.nav button{width:100%;text-align:left;margin:4px 0;background:transparent}.nav button.active,.nav button:hover{background:#17243a}
-.main{padding:20px;max-width:1500px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:15px}.top h1{margin:0;font-size:25px}.actions{display:flex;gap:8px;flex-wrap:wrap}
-.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:15px}.stat{background:#0d1627;border:1px solid #1b2a42;padding:15px;border-radius:15px}.stat b{font-size:24px;display:block}.muted{color:#8fa1bc;font-size:13px}
-.card{background:#0d1627;border:1px solid #1b2a42;border-radius:16px;padding:16px;margin-bottom:15px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.builder-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.bpanel{max-height:65vh;overflow:auto}.bitem{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 4px;border-bottom:1px solid #19263b}.bitem:last-child{border-bottom:0}.bcat{width:100%;margin-top:4px;padding:6px 8px;font-size:12px}
-.playerWrap{grid-column:1/-1;background:#000;border-radius:12px;overflow:hidden;margin-top:10px;position:relative;width:100%;aspect-ratio:16/9}.playerWrap video{width:100%;height:100%;object-fit:contain;background:#000}
-.playerClose{position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.6);color:#fff;border-radius:50%;width:34px;height:34px;padding:0;font-size:16px;line-height:1;z-index:2}
-.playerStatus{position:absolute;left:0;right:0;bottom:0;padding:6px 10px;background:rgba(0,0,0,0.8);z-index:2}.playerStatus:empty{display:none}
-.bcat-group{margin-bottom:10px;border:1px solid #19263b;border-radius:10px;overflow:hidden}.bcat-header{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#101c30;padding:8px 10px}.bcat-header b{font-size:13px}
-label{font-size:12px;color:#9fb0ca;display:block;margin-bottom:5px}input,select,textarea{width:100%;background:#080f1c;color:#eef3ff;border:1px solid #263752;border-radius:10px;padding:11px;outline:none}textarea{min-height:180px;resize:vertical}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.channel{display:grid;grid-template-columns:28px 45px 55px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px;border-bottom:1px solid #19263b;overflow:hidden;max-width:100%}.channel:last-child{border-bottom:0}.logo{width:48px;height:48px;object-fit:contain;background:#07101d;border-radius:10px;border:1px solid #25344d}.drag{cursor:grab;color:#7587a3;font-size:20px}.pill{font-size:11px;background:#17243a;padding:5px 8px;border-radius:999px;color:#b8c7dc}.empty{padding:35px;text-align:center;color:#8fa1bc}.chk{width:20px;height:20px;accent-color:#2563eb}
-.channel .tools{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.channel .tools button{width:100%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-left:4px;padding-right:4px}
-#bulkBar{position:sticky;top:0;z-index:5;background:#0d1627;border:1px solid #2563eb;border-radius:12px;padding:10px 12px;margin-bottom:12px}
-.modal{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;padding:15px;z-index:20}.modal.show{display:flex}.modalbox{background:#0d1627;border:1px solid #2a3c59;border-radius:18px;padding:18px;width:min(650px,100%);max-height:92vh;overflow:auto}.preview{display:flex;align-items:center;gap:12px;margin-top:10px}.preview img{width:65px;height:65px;object-fit:contain;border:1px solid #263752;border-radius:10px;background:#080f1c}
-.tab{display:none}.tab.active{display:block}.drop{border:2px dashed #2c4363;padding:25px;text-align:center;border-radius:14px}.small{font-size:12px}.success{color:#61d095}.error{color:#ff8c8c}
-@media(max-width:800px){.app{display:block}.side{position:sticky;top:0;z-index:10;border-right:0;border-bottom:1px solid #1d2a40;padding:10px}.brand-wrap{margin-bottom:0;display:inline-flex;vertical-align:middle}.brand-logo{width:32px;height:32px}.brand{font-size:13px}.brand span{display:none}.nav{display:inline-flex;overflow:auto;vertical-align:middle;max-width:60%}.nav button{width:auto;white-space:nowrap}.main{padding:12px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid,.grid3{grid-template-columns:1fr}.channel{grid-template-columns:22px 22px 40px minmax(0,1fr);min-width:0}.channel .tools{grid-column:4;grid-template-columns:repeat(3,minmax(0,1fr))}.top{align-items:flex-start;flex-direction:column}#bulkBar{flex-direction:column;align-items:stretch}#bulkBar button{width:100%}.builder-grid{grid-template-columns:1fr}.bpanel{max-height:40vh}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JP ALL IN ONE</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+        body { background-color: #0b1120; color: #f3f4f6; padding: 12px; }
+        
+        /* Top Branding Header */
+        .brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #1e293b;
+            margin-bottom: 12px;
+        }
+        .brand-logo {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #2563eb;
+        }
+        .brand-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* Responsive Navigation / Tools */
+        .nav-tools {
+            display: flex;
+            justify-content: space-around;
+            gap: 6px;
+            margin-bottom: 16px;
+            background: #1e293b;
+            padding: 8px;
+            border-radius: 10px;
+        }
+        .nav-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            color: #94a3b8;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        .nav-btn.active {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .container { max-width: 600px; margin: 0 auto; }
+    </style>
 </head>
 <body>
-<div class="app">
-<aside class="side">
-  <div class="brand-wrap">
-    <img src="1000446158.png" alt="JP Logo" class="brand-logo">
-    <div class="brand">
-      JP ALL IN ONE
-      <span>M3U GENERATOR</span>
+
+<div class="container">
+    <!-- Top Name & Logo -->
+    <div class="brand-header">
+        <img src="https://via.placeholder.com/45" alt="Logo" class="brand-logo" id="appLogo">
+        <h1 class="brand-title">JP ALL IN ONE</h1>
     </div>
-  </div>
-  <div class="nav">
-    <button class="active" data-tab="editor">✏️ Editor</button>
-    <button data-tab="create">➕ Create</button>
-    <button data-tab="logo">🖼️ Logo Manager</button>
-    <button data-tab="builder">🧩 Playlist Builder</button>
-    <button data-tab="tools">🛠️ Tools</button>
-    <button data-tab="export">📤 Export</button>
-  </div>
-</aside>
-<main class="main">
-<div class="top"><h1 id="title">Playlist Editor</h1><div class="actions"><button onclick="document.getElementById('file').click()">📂 Import File</button><button class="primary" onclick="openEditor()">➕ Add Channel</button><input id="file" type="file" accept=".m3u,.m3u8,.txt" hidden></div></div>
 
-<section id="editor" class="tab active">
-<div class="card"><div class="row"><div style="flex:1;min-width:180px"><label>বর্তমান প্লেলিস্ট</label><select id="playlistSelect"></select></div><button class="primary" onclick="newPlaylist()">➕ নতুন প্লেলিস্ট</button><button onclick="renamePlaylist()">✏️ Rename</button><button class="danger" onclick="deletePlaylistCurrent()">🗑️ Delete</button></div></div>
-<div class="stats"><div class="stat"><b id="sChannels">0</b><span class="muted">Channels</span></div><div class="stat"><b id="sGroups">0</b><span class="muted">Groups</span></div><div class="stat"><b id="sLogos">0</b><span class="muted">With Logo</span></div><div class="stat"><b id="sBad">0</b><span class="muted">Invalid URL</span></div><div class="stat"><b id="sDead" style="color:#ff8c8c">0</b><span class="muted">Dead</span></div></div>
-<div class="card"><div class="grid3"><div><label>Search</label><input id="search" placeholder="Channel name / URL / group"></div><div><label>Group</label><select id="groupFilter"><option value="">All Groups</option></select></div><div><label>Playlist Title</label><input id="playlistTitle" value="JP M3U Playlist"></div></div>
-<div class="row" style="margin-top:10px"><label class="small" style="display:flex;align-items:center;gap:6px;margin:0"><input type="checkbox" id="onlyDead" style="width:auto"> শুধু Dead চ্যানেল দেখাও</label><button class="danger" onclick="deleteCategory()">🗑️ এই ক্যাটাগরির সব ডিলিট করুন</button></div></div>
-<div class="card">
-<div id="bulkBar" class="row"><label class="small" style="display:flex;align-items:center;gap:6px;margin:0"><input type="checkbox" id="selAll" class="chk" onchange="toggleSelAll(this.checked)"> সব সিলেক্ট</label><span class="small muted" id="selCount">0 সিলেক্ট করা হয়েছে</span><button id="bulkMoveBtn" onclick="bulkMoveCategory()" style="display:none">🔀 ক্যাটাগরি বদলান (<span id="bulkMoveCount">0</span>)</button><button class="danger" id="bulkDelBtn" onclick="bulkDelete()" style="display:none">🗑️ নির্বাচিত ডিলিট করুন (<span id="bulkDelCount">0</span>)</button></div>
-<div id="list"></div>
-<div id="pageBar" class="row" style="justify-content:space-between;margin-top:12px"><div class="row"><button onclick="gotoPage(currentPage-1)">◀ Prev</button><span id="pageInfo" class="small muted">Page 1/1</span><button onclick="gotoPage(currentPage+1)">Next ▶</button></div><div><label style="margin-bottom:0;display:inline;margin-right:6px">প্রতি পেজে</label><select id="pageSize" style="width:auto;display:inline-block"><option value="50">50</option><option value="100">100</option><option value="200">200</option><option value="500">500</option></select></div></div>
+    <!-- Navigation / Tools below Header -->
+    <div class="nav-tools">
+        <button class="nav-btn active">✏️ Editor</button>
+        <button class="nav-btn">➕ Create</button>
+        <button class="nav-btn">🖼️ Gallery</button>
+    </div>
 </div>
-</section>
-
-<section id="create" class="tab">
-<div class="card"><h2>Import / Create from Text or URL</h2>
-<div class="drop" id="drop">Drop an M3U file here<br><span class="muted">or use the buttons below</span><div class="row" style="justify-content:center;margin-top:12px"><button onclick="document.getElementById('file').click()">Choose File</button></div></div>
-<label style="margin-top:14px">পাবলিক M3U/M3U8 URL (যেমন GitHub Raw লিংক)</label>
-<div class="row"><input id="importUrl" placeholder="https://raw.githubusercontent.com/.../list.m3u" style="flex:1"><button class="primary" onclick="importFromUrl()">🔗 Fetch & Import</button></div>
-<div id="importUrlStatus" class="small muted" style="margin-top:6px"></div>
-<label style="margin-top:14px">Paste M3U / M3U8 text</label><textarea id="raw" placeholder="#EXTM3U&#10;#EXTINF:-1 group-title=&quot;News&quot;,Channel Name&#10;https://example.com/live.m3u8"></textarea>
-<div class="row" style="margin-top:10px"><button class="primary" onclick="parseRaw()">Parse & Add</button><button onclick="document.getElementById('raw').value=''">Clear</button></div>
-</div>
-</section>
-
-<section id="logo" class="tab">
-<div class="card"><h2>🖼️ Logo Manager</h2>
-<p class="muted">Logo URL অবশ্যই public HTTPS image URL হওয়া ভালো।</p>
-<div class="grid">
-<div><label>Channel</label><select id="logoChannel"></select></div>
-<div><label>Logo URL</label><input id="logoUrl" placeholder="https://.../logo.png"><input id="logoUpload" type="file" accept="image/*" hidden><button style="margin-top:6px;width:100%" onclick="$('logoUpload').click()">📷 গ্যালারি থেকে আপলোড</button></div>
-</div>
-<div class="preview"><img id="logoPreview" src="" alt=""><span id="logoStatus" class="muted">Preview</span></div>
-<div class="row" style="margin-top:12px"><button class="primary" onclick="saveLogo()">✅ Save as Original Logo</button><button onclick="convertGithub()">Convert GitHub → Raw</button><button onclick="searchLogo()">🔎 Search Logo</button></div>
-<div class="row" style="margin-top:8px"><button onclick="applyLibraryToAll()">🔁 সব চ্যানেলে Original Logo অ্যাপ্লাই করুন</button></div>
-<hr style="border-color:#1b2a42;margin:18px 0">
-<h3>🧹 স্টোরেজ খালি করুন</h3>
-<div class="row" style="margin-top:8px"><button onclick="recompressAllGalleryLogos()">🗜️ সব গ্যালারি-লোগো ছোট করুন</button><button class="danger" onclick="removeAllGalleryLogos()">🗑️ সব গ্যালারি-লোগো মুছুন</button></div>
-<hr style="border-color:#1b2a42;margin:18px 0">
-<h3>☁️ GitHub Repo-তে Upload করুন</h3>
-<div class="grid3">
-<div><label>GitHub Token</label><input id="logoGhToken" type="password" placeholder="ghp_..."></div>
-<div><label>Repo (owner/repo)</label><input id="logoGhRepo" placeholder="username/repo-name"></div>
-<div><label>Branch</label><input id="logoGhBranch" value="main"></div>
-</div>
-<div class="row" style="margin-top:8px"><label class="small" style="display:flex;align-items:center;gap:6px;margin:0"><input type="checkbox" id="ghAutoUpload" style="width:auto" checked> গ্যালারি থেকে ছবি বাছলেই অটো GitHub-এ আপলোড করুন</label></div>
-<div class="row" style="margin-top:6px"><label class="small" style="display:flex;align-items:center;gap:6px;margin:0"><input type="checkbox" id="ghRememberToken" style="width:auto"> এই ফোনে Token মনে রাখুন</label><button onclick="forgetGhConfig()">🔓 মুছে ফেলুন</button></div>
-<div class="row" style="margin-top:10px"><button class="primary" onclick="uploadLogoToGithub()">☁️ Upload to GitHub</button><button onclick="migrateAllLogosToGithub()">☁️➡️ আগে থেকে থাকা সব গ্যালারি-লোগো GitHub-এ পাঠান</button></div>
-</div>
-</section>
-
-<section id="builder" class="tab">
-<div class="card"><h2>🧩 নিজের মতো ক্যাটাগরি করে প্লেলিস্ট তৈরি করুন</h2>
-<div class="grid3"><div><label>নতুন প্লেলিস্টের নাম</label><input id="builderName" placeholder="যেমন: আমার প্রিয় চ্যানেল"></div><div><label>সোর্স প্লেলিস্ট</label><select id="builderSource"></select></div><div><label>সোর্সে খুঁজুন</label><input id="builderSearch" placeholder="নাম / গ্রুপ"></div></div>
-</div>
-<div class="builder-grid">
-<div class="card"><h3>⬅️ সোর্স চ্যানেল</h3><div id="builderLeft" class="bpanel"></div></div>
-<div class="card"><h3>➡️ নতুন প্লেলিস্ট (<span id="builderCount">0</span>)</h3><div id="builderRight" class="bpanel"></div>
-<div class="row" style="margin-top:12px"><button class="primary" onclick="saveBuilderAsPlaylist()">✅ প্লেলিস্ট হিসেবে সেভ করুন</button><button onclick="builderDownload()">⬇️ M3U ডাউনলোড</button><button onclick="builderCopy()">📋 Copy</button><button class="danger" onclick="clearBuilder()">🗑️ সব সরান</button></div>
-</div>
-</div>
-</section>
-
-<section id="tools" class="tab">
-<div class="card"><h2>🛠️ Playlist Tools</h2><div class="row"><button onclick="removeDuplicates()">Remove Duplicate URLs</button><button onclick="sortAZ()">Sort A-Z</button><button onclick="validate()">Validate URLs</button><button onclick="exportJSON()">Backup JSON</button><button onclick="importJSON()">Restore JSON</button><input id="jsonFile" type="file" accept=".json" hidden></div></div>
-<div class="card"><h3>🔍 Dead Channel Checker</h3><div class="row"><button class="primary" onclick="checkDead()">🔍 Check Dead Channels</button></div><div id="deadProgress" class="small muted" style="margin-top:8px"></div></div>
-<div class="card"><h3>Bulk Search / Replace</h3><div class="grid"><input id="find" placeholder="Find"><input id="replace" placeholder="Replace with"></div><button style="margin-top:10px" onclick="bulkReplace()">Apply</button></div>
-</section>
-
-<section id="export" class="tab">
-<div class="card"><h2>📤 Generate M3U</h2><div class="grid"><div><label>Playlist Title</label><input id="exportTitle"></div><div><label>Header extra (optional)</label><input id="headerExtra" placeholder="e.g. x-tvg-url=&quot;https://.../epg.xml&quot;"></div></div><label style="margin-top:10px">Generated M3U</label><textarea id="output" readonly></textarea><div class="row" style="margin-top:10px"><button class="primary" onclick="generate()">Generate</button><button onclick="copyOutput()">Copy</button><button onclick="downloadM3U()">Download .m3u</button><button onclick="shareOutput()">Share</button></div>
-<hr style="border-color:#1b2a42;margin:18px 0">
-<h3>Private GitHub Gist</h3>
-<input id="gistToken" type="password" placeholder="GitHub token (gist permission)">
-<input id="gistFilename" value="playlist.m3u" style="margin-top:8px">
-<button class="primary" style="margin-top:8px" onclick="createGist()">Create Private Gist</button>
-<div id="gistResult" class="small" style="margin-top:8px"></div>
-</div>
-</section>
-</main></div>
-
-<div class="modal" id="modal"><div class="modalbox">
-<h2 id="modalTitle">Add Channel</h2>
-<div class="grid">
-<div><label>Name</label><input id="fName"></div><div><label>Group</label><input id="fGroup" value="Channels"></div>
-<div><label>Logo URL</label><input id="fLogo"></div><div><label>TVG ID</label><input id="fTvg"></div>
-<div><label>Language</label><input id="fLang" placeholder="Bangla"></div><div><label>Country</label><input id="fCountry" placeholder="BD"></div>
-<div><label>User-Agent</label><input id="fUA"></div><div><label>Referer</label><input id="fRef"></div>
-</div>
-<label style="margin-top:10px">Stream URL (Primary)</label><input id="fUrl">
-<div class="grid" style="margin-top:10px"><div><label>Backup URL 1</label><input id="fB1"></div><div><label>Backup URL 2</label><input id="fB2"></div></div>
-<div class="row" style="justify-content:flex-end;margin-top:14px"><button onclick="closeEditor()">Cancel</button><button class="primary" onclick="saveChannel()">Save</button></div>
-</div></div>
 
 <script>
-let channels=[], editIndex=-1, selected=new Set(), store={playlists:{},current:''}, dragFrom=-1;
-const $=id=>document.getElementById(id);
+    // IndexedDB Setup
+    const dbName = "JP_PlaylistDB";
+    let db;
 
-document.querySelectorAll('.nav button').forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    btn.classList.add('active');
-    $(btn.dataset.tab).classList.add('active');
-    $('title').textContent = btn.textContent.trim().replace(/^[\u{1F300}-\u{1F6FF}\u{2600}-\u{26FF}]\s*/u, '');
-  };
-});
+    const request = indexedDB.open(dbName, 1);
 
-function saveStore(){
-  store.playlists[store.current]={channels,title:$('playlistTitle').value};
-  try{
-    localStorage.setItem('jp_m3u_store_v1',JSON.stringify(store));
-  }catch(e){
-    alert('⚠️ স্টোরেজ পূর্ণ! লোগো ফিল্ড খাটো করুন অথবা গ্যালারি লোগো মুছে ফেলুন।');
-  }
-}
+    request.onupgradeneeded = function(e) {
+        db = e.target.result;
+        if (!db.objectStoreNames.contains("playlists")) {
+            db.createObjectStore("playlists", { keyPath: "id" });
+        }
+    };
 
-function loadStore(){
-  try{
-    let raw=localStorage.getItem('jp_m3u_store_v1');
-    if(raw){store=JSON.parse(raw)}else{
-      store={playlists:{'JP Playlist':{channels:[],title:'JP Playlist'}},current:'JP Playlist'}
+    request.onsuccess = function(e) {
+        db = e.target.result;
+        console.log("IndexedDB Ready!");
+    };
+
+    request.onerror = function(e) {
+        console.error("IndexedDB Error:", e.target.errorCode);
+    };
+
+    // Save Data to IndexedDB (No Size Limit Error)
+    function saveToIndexedDB(key, data) {
+        if (!db) return;
+        const transaction = db.transaction(["playlists"], "readwrite");
+        const store = transaction.objectStore("playlists");
+        store.put({ id: key, content: data });
     }
-  }catch(e){
-    store={playlists:{'JP Playlist':{channels:[],title:'JP Playlist'}},current:'JP Playlist'}
-  }
-  if(!store.playlists[store.current])store.current=Object.keys(store.playlists)[0]||'JP Playlist';
-  channels=store.playlists[store.current].channels||[];
-  $('playlistTitle').value=store.playlists[store.current].title||store.current;
-}
 
-function refreshPlaylistSelect(){
-  $('playlistSelect').innerHTML=Object.keys(store.playlists).map(n=>`<option ${n===store.current?'selected':''}>${esc(n)}</option>`).join('');
-}
-
-function switchPlaylist(name){
-  if(!store.playlists[name]||name===store.current)return;
-  stopPlayerSilently();
-  saveStore();
-  store.current=name;
-  channels=store.playlists[name].channels||[];
-  $('playlistTitle').value=store.playlists[name].title||name;
-  selected.clear();
-  resetPageAndRender();
-  refreshPlaylistSelect();
-}
-
-$('playlistSelect').onchange=e=>switchPlaylist(e.target.value);
-
-function newPlaylist(){
-  let name=prompt('নতুন প্লেলিস্টের নাম দিন:');
-  if(!name||!name.trim())return;
-  name=name.trim();
-  stopPlayerSilently();
-  saveStore();
-  if(!store.playlists[name])store.playlists[name]={channels:[],title:name};
-  store.current=name;
-  channels=store.playlists[name].channels;
-  $('playlistTitle').value=name;
-  selected.clear();
-  saveStore();
-  resetPageAndRender();
-  refreshPlaylistSelect();
-}
-
-function renamePlaylist(){
-  let oldName=store.current;
-  let name=prompt('নতুন নাম দিন:',oldName);
-  if(!name||!name.trim()||name.trim()===oldName)return;
-  name=name.trim();
-  if(store.playlists[name])return alert('এই নামে প্লেলিস্ট বিদ্যমান');
-  store.playlists[name]=store.playlists[oldName];
-  store.playlists[name].title=name;
-  delete store.playlists[oldName];
-  store.current=name;
-  $('playlistTitle').value=name;
-  saveStore();
-  refreshPlaylistSelect();
-}
-
-function deletePlaylistCurrent(){
-  if(Object.keys(store.playlists).length<=1)return alert('কমপক্ষে একটি প্লেলিস্ট থাকতে হবে');
-  if(!confirm('"'+store.current+'" ডিলিট করতে চান?'))return;
-  stopPlayerSilently();
-  delete store.playlists[store.current];
-  store.current=Object.keys(store.playlists)[0];
-  channels=store.playlists[store.current].channels||[];
-  $('playlistTitle').value=store.playlists[store.current].title||store.current;
-  selected.clear();
-  saveStore();
-  resetPageAndRender();
-  refreshPlaylistSelect();
-}
-
-function save(){saveStore()}
-function load(){loadStore();refreshPlaylistSelect()}
-function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-
-function parseAttrs(s){
-  let o={}, re=/([\w-]+)=(?:"([^"]*)"|'([^']*)'|([^\s]*))/g,m;
-  while(m=re.exec(s))o[m[1]]=m[2]??m[3]??m[4]??'';
-  return o;
-}
-
-function parseM3U(text){
-  let lines=text.replace(/\r/g,'').split('\n'), out=[];
-  for(let i=0;i<lines.length;i++){
-    let l=lines[i].trim();
-    if(!l.startsWith('#EXTINF'))continue;
-    let comma=l.indexOf(',');
-    let attrs=parseAttrs(l.slice(7,comma<0?l.length:comma));
-    let name=comma>=0?l.slice(comma+1).trim():(attrs['tvg-name']||'Unnamed');
-    let url='',b1='',b2='';
-    for(let j=i+1;j<lines.length;j++){
-      let q=lines[j].trim();
-      if(q.startsWith('#JP-BACKUP-1:')){b1=q.slice(13).trim();continue}
-      if(q.startsWith('#JP-BACKUP-2:')){b2=q.slice(13).trim();continue}
-      if(q&&!q.startsWith('#')){url=q;i=j;break}
+    // Read Data from IndexedDB
+    function getFromIndexedDB(key, callback) {
+        if (!db) return;
+        const transaction = db.transaction(["playlists"], "readonly");
+        const store = transaction.objectStore("playlists");
+        const request = store.get(key);
+        
+        request.onsuccess = function() {
+            if (request.result) callback(request.result.content);
+        };
     }
-    if(url)out.push({name,group:attrs['group-title']||'Channels',logo:attrs['tvg-logo']||'',tvg:attrs['tvg-id']||'',lang:attrs['tvg-language']||'',country:attrs['tvg-country']||'',ua:'',ref:'',url,b1,b2});
-  }
-  return out;
-}
-
-function loadLogoLib(){try{return JSON.parse(localStorage.getItem('jp_logo_library_v1')||'{}')}catch(e){return{}}}
-function saveLogoLib(lib){try{localStorage.setItem('jp_logo_library_v1',JSON.stringify(lib))}catch(e){}}
-function logoKey(name){return(name||'').trim().toLowerCase()}
-
-function setOriginalLogo(name,logo){
-  let key=logoKey(name);if(!key||!logo)return;
-  let lib=loadLogoLib();lib[key]=logo;saveLogoLib(lib);
-}
-
-function applyLibraryToAll(){
-  let lib=loadLogoLib(), changed=0;
-  for(let c of channels){
-    let key=logoKey(c.name);
-    if(lib[key]&&lib[key]!==c.logo){c.logo=lib[key];changed++}
-  }
-  save();render();
-  alert(changed?changed+' টি চ্যানেলের লোগো আপডেট হয়েছে':'কোনো আপডেট প্রয়োজন নেই');
-}
-
-function addParsed(text){
-  let p=parseM3U(text);
-  let existing=new Set(channels.map(c=>c.url));
-  let fresh=p.filter(c=>!existing.has(c.url));
-  let skipped=p.length-fresh.length;
-  let lib=loadLogoLib();
-  for(let c of fresh){
-    let key=logoKey(c.name);
-    if(lib[key]){c.logo=lib[key]}else if(c.logo){lib[key]=c.logo}
-  }
-  saveLogoLib(lib);
-  channels.push(...fresh);
-  save();resetPageAndRender();
-  return{added:fresh.length,skipped};
-}
-
-$('file').addEventListener('change',async e=>{
-  let f=e.target.files[0];
-  if(f){let res=addParsed(await f.text());alert(res.added+' টি চ্যানেল যুক্ত হয়েছে।')}
-  e.target.value='';
-});
-
-async function importFromUrl(){
-  let u=$('importUrl').value.trim();
-  if(!u)return alert('URL লিখুন');
-  $('importUrlStatus').textContent='⏳ লোড হচ্ছে...';
-  try{
-    let r=await fetch(u);if(!r.ok)throw Error('HTTP '+r.status);
-    let text=await r.text();
-    let res=addParsed(text);
-    $('importUrlStatus').textContent='✅ '+res.added+' টি চ্যানেল যুক্ত হয়েছে';
-  }catch(e){
-    $('importUrlStatus').textContent='❌ ইম্পোর্ট ব্যর্থ: '+e.message;
-  }
-}
-
-function openEditor(i=-1){
-  editIndex=i;
-  let c=i>=0?channels[i]:{};
-  $('modalTitle').textContent=i>=0?'Edit Channel':'Add Channel';
-  $('fName').value=c.name||'';$('fGroup').value=c.group||'Channels';
-  $('fLogo').value=c.logo||'';$('fTvg').value=c.tvg||'';
-  $('fLang').value=c.lang||'';$('fCountry').value=c.country||'';
-  $('fUA').value=c.ua||'';$('fRef').value=c.ref||'';
-  $('fUrl').value=c.url||'';$('fB1').value=c.b1||'';$('fB2').value=c.b2||'';
-  $('modal').classList.add('show');
-}
-function closeEditor(){$('modal').classList.remove('show')}
-
-function saveChannel(){
-  let c={name:$('fName').value.trim()||'Unnamed',group:$('fGroup').value.trim()||'Channels',logo:$('fLogo').value.trim(),tvg:$('fTvg').value.trim(),lang:$('fLang').value.trim(),country:$('fCountry').value.trim(),ua:$('fUA').value.trim(),ref:$('fRef').value.trim(),url:$('fUrl').value.trim(),b1:$('fB1').value.trim(),b2:$('fB2').value.trim()};
-  if(!c.url)return alert('Stream URL দেওয়া আবশ্যক');
-  if(c.logo)setOriginalLogo(c.name,c.logo);
-  if(editIndex>=0)channels[editIndex]=c;else channels.push(c);
-  save();render();closeEditor();
-}
-
-function del(i){
-  if(confirm('মুছে ফেলতে চান?')){
-    stopPlayerSilently();
-    channels.splice(i,1);
-    selected.clear();
-    save();render();
-  }
-}
-
-function move(from,to){
-  if(to<0||to>=channels.length)return;
-  stopPlayerSilently();
-  let x=channels.splice(from,1)[0];
-  channels.splice(to,0,x);
-  selected.clear();save();render();
-}
-
-function statusBadge(s){
-  if(s==='alive')return '<span class="pill" style="background:#173a24;color:#61d095">✅ Live</span>';
-  if(s==='dead')return '<span class="pill" style="background:#3a1717;color:#ff8c8c">❌ Dead</span>';
-  if(s==='unknown')return '<span class="pill" style="background:#1a2438;color:#b8c7dc">❔ Unknown</span>';
-  if(s==='insecure')return '<span class="pill" style="background:#3a2e17;color:#f5c26b">🔒 HTTP</span>';
-  return '';
-}
-
-let playingIndex=-1, hlsInstance=null;
-function playChannel(i){
-  if(playingIndex===i){stopPlayer();return}
-  stopPlayerSilently();
-  playingIndex=i;
-  render();
-}
-
-function stopPlayerSilently(){
-  if(hlsInstance){try{hlsInstance.destroy()}catch(e){}hlsInstance=null}
-  playingIndex=-1;
-}
-function stopPlayer(){stopPlayerSilently();render()}
-
-function attachPlayer(c){
-  let video=document.getElementById('videoPlayer');
-  let st=document.getElementById('playerStatus');
-  if(!video||!c)return;
-
-  let sources=[{url:c.url,label:'Primary'}];
-  if(c.b1)sources.push({url:c.b1,label:'Backup 1'});
-  if(c.b2)sources.push({url:c.b2,label:'Backup 2'});
-
-  let idx=0;
-  function tryNext(){
-    if(idx>=sources.length){
-      if(st)st.textContent='❌ প্লে করা যাচ্ছে না (Stream Offline অথবা CORS প্রবলেম)';
-      return;
-    }
-    let src=sources[idx++];
-    if(st)st.textContent='⏳ '+src.label+' লোড হচ্ছে...';
-
-    if(hlsInstance){hlsInstance.destroy();hlsInstance=null}
-
-    if(window.Hls && Hls.isSupported()){
-      hlsInstance=new Hls();
-      hlsInstance.loadSource(src.url);
-      hlsInstance.attachMedia(video);
-      hlsInstance.on(Hls.Events.MANIFEST_PARSED,()=>{
-        if(st)st.textContent='▶️ প্লে হচ্ছে';
-        video.play().catch(()=>{});
-      });
-      hlsInstance.on(Hls.Events.ERROR,(e,data)=>{if(data.fatal)tryNext()});
-    }else if(video.canPlayType('application/vnd.apple.mpegurl')){
-      video.src=src.url;
-      video.onloadedmetadata=()=>{video.play().catch(()=>{})};
-      video.onerror=()=>tryNext();
-    }else{
-      video.src=src.url;
-      video.play().catch(()=>tryNext());
-    }
-  }
-  tryNext();
-}
-
-let currentPage=0;
-function gotoPage(p){
-  let max=Math.max(0,Math.ceil(lastVisibleCount/getPageSize())-1);
-  currentPage=Math.min(Math.max(0,p),max);
-  stopPlayerSilently();render();
-}
-function getPageSize(){return +($('pageSize').value||50)}
-let lastVisibleCount=0;
-
-function render(){
-  let q=$('search').value.toLowerCase(),g=$('groupFilter').value,onlyDead=$('onlyDead').checked;
-  let groups=[...new Set(channels.map(x=>x.group||'Channels'))].sort();
-  $('groupFilter').innerHTML='<option value="">All Groups</option>'+groups.map(x=>`<option ${x===g?'selected':''}>${esc(x)}</option>`).join('');
-
-  let visible=channels.map((c,i)=>({...c,i})).filter(c=>(!q||Object.values(c).join(' ').toLowerCase().includes(q))&&(!g||c.group===g)&&(!onlyDead||c.status==='dead'));
-  lastVisibleCount=visible.length;
-  let pageSize=getPageSize();
-  let totalPages=Math.max(1,Math.ceil(visible.length/pageSize));
-  if(currentPage>=totalPages)currentPage=totalPages-1;
-  if(currentPage<0)currentPage=0;
-
-  let pageItems=visible.slice(currentPage*pageSize,(currentPage+1)*pageSize);
-  $('pageInfo').textContent='Page '+(currentPage+1)+'/'+totalPages+' ('+visible.length+' চ্যানেল)';
-
-  $('list').innerHTML=pageItems.length?pageItems.map(c=>`
-    <div class="channel" draggable="true" ondragstart="dragFrom=${c.i}" ondragover="event.preventDefault()" ondrop="move(dragFrom,${c.i})">
-      <input type="checkbox" class="chk" ${selected.has(c.i)?'checked':''} onchange="toggleSel(${c.i},this.checked)">
-      <span class="drag">☷</span>
-      <img class="logo" loading="lazy" src="${esc(c.logo)}" onerror="this.style.opacity=.25" alt="">
-      <div style="min-width:0;overflow:hidden">
-        <b style="word-break:break-word">${esc(c.name)}</b>
-        <div class="row">
-          <span class="pill">${esc(c.group||'Channels')}</span>
-          ${c.lang?`<span class="pill">${esc(c.lang)}</span>`:''}
-          ${statusBadge(c.status)}
-        </div>
-        <div class="muted small" style="word-break:break-all">${esc(c.url)}</div>
-      </div>
-      <div class="tools row">
-        <button class="primary" onclick="playChannel(${c.i})">${playingIndex===c.i?'⏹ Stop':'▶️ Play'}</button>
-        <button onclick="move(${c.i},${c.i-1})">↑</button>
-        <button onclick="move(${c.i},${c.i+1})">↓</button>
-        <button onclick="openEditor(${c.i})">Edit</button>
-        <button class="danger" onclick="del(${c.i})">Delete</button>
-      </div>
-      ${playingIndex===c.i?`<div class="playerWrap"><button class="playerClose" onclick="stopPlayer()">✕</button><video id="videoPlayer" controls autoplay playsinline></video><div id="playerStatus" class="playerStatus small muted"></div></div>`:''}
-    </div>
-  `).join(''):'<div class="empty">কোনো চ্যানেল পাওয়া যায়নি।</div>';
-
-  updateBulkBar();updateStats();updateLogoSelect();
-  if(playingIndex>=0&&channels[playingIndex])attachPlayer(channels[playingIndex]);
-}
-
-function toggleSel(i,checked){if(checked)selected.add(i);else selected.delete(i);updateBulkBar()}
-function visibleIndexes(){
-  let q=$('search').value.toLowerCase(),g=$('groupFilter').value,onlyDead=$('onlyDead').checked;
-  return channels.map((c,i)=>({...c,i})).filter(c=>(!q||Object.values(c).join(' ').toLowerCase().includes(q))&&(!g||c.group===g)&&(!onlyDead||c.status==='dead')).map(c=>c.i);
-}
-function toggleSelAll(checked){
-  let idx=visibleIndexes();
-  if(checked)idx.forEach(i=>selected.add(i));else idx.forEach(i=>selected.delete(i));
-  render();
-}
-
-function updateBulkBar(){
-  $('selCount').textContent=selected.size+' টি সিলেক্ট করা হয়েছে';
-  $('bulkDelCount').textContent=selected.size;
-  $('bulkDelBtn').style.display=selected.size?'inline-block':'none';
-  $('bulkMoveCount').textContent=selected.size;
-  $('bulkMoveBtn').style.display=selected.size?'inline-block':'none';
-}
-
-function bulkDelete(){
-  if(!selected.size||!confirm(selected.size+' টি চ্যানেল ডিলিট নিশ্চিত করবেন?'))return;
-  stopPlayerSilently();
-  channels=channels.filter((_,i)=>!selected.has(i));
-  selected.clear();save();render();
-}
-
-function bulkMoveCategory(){
-  let newCat=prompt('নতুন ক্যাটাগরির নাম:');
-  if(!newCat||!newCat.trim())return;
-  for(let i of selected){if(channels[i])channels[i].group=newCat.trim()}
-  selected.clear();save();render();
-}
-
-function deleteCategory(){
-  let cat=$('groupFilter').value;
-  if(!cat||!confirm('"'+cat+'" ক্যাটাগরির সব চ্যানেল মুছে ফেলা হবে?'))return;
-  stopPlayerSilently();
-  channels=channels.filter(c=>(c.group||'Channels')!==cat);
-  selected.clear();$('groupFilter').value='';save();resetPageAndRender();
-}
-
-function removeDuplicates(){
-  let seen=new Set(), count=channels.length;
-  channels=channels.filter(c=>{
-    let k=(c.url||'').trim().toLowerCase();
-    if(!k||seen.has(k))return false;
-    seen.add(k);return true;
-  });
-  save();render();
-  alert((count-channels.length)+' টি ডুপ্লিকেট সরানো হয়েছে');
-}
-
-function updateStats(){
-  $('sChannels').textContent=channels.length;
-  $('sGroups').textContent=new Set(channels.map(c=>c.group||'Channels')).size;
-  $('sLogos').textContent=channels.filter(c=>c.logo).length;
-  $('sBad').textContent=channels.filter(c=>!/^https?:\/\//i.test(c.url||'')).length;
-  $('sDead').textContent=channels.filter(c=>c.status==='dead').length;
-}
-
-function updateLogoSelect(){
-  let old=$('logoChannel').value;
-  $('logoChannel').innerHTML=channels.map((c,i)=>`<option value="${i}">${esc(c.name)}</option>`).join('');
-  if(old)$('logoChannel').value=old;
-  loadLogo();
-}
-
-$('logoChannel').onchange=loadLogo;
-function loadLogo(){
-  let i=+$('logoChannel').value,c=channels[i];
-  if(!c)return;
-  $('logoUrl').value=c.logo||'';
-  $('logoPreview').src=c.logo||'';
-}
-
-function saveLogo(){
-  let i=+$('logoChannel').value;
-  if(!channels[i])return;
-  channels[i].logo=$('logoUrl').value.trim();
-  save();render();alert('Logo Saved!');
-}
-
-function convertGithub(){
-  let u=$('logoUrl').value.trim();
-  let m=u.match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.+)$/);
-  if(m)$('logoUrl').value=`https://raw.githubusercontent.com/${m[1]}/${m[2]}/${m[3]}/${m[4]}`;
-  $('logoPreview').src=$('logoUrl').value;
-}
-
-async function uploadLogoToGithub(){
-  let dataUrl=$('logoUrl').value.trim();
-  let m=dataUrl.match(/^data:image\/(\w+);base64,(.+)$/);
-  if(!m)return alert('গ্যালারি থেকে সঠিক ছবি সিলেক্ট করুন');
-  let token=$('logoGhToken').value.trim(), repo=$('logoGhRepo').value.trim(), branch=$('logoGhBranch').value.trim()||'main';
-  if(!token||!repo)return alert('Token এবং Repo দিন');
-
-  let path='logos/logo-'+Date.now()+'.'+(m[1]==='jpeg'?'jpg':m[1]);
-  $('logoStatus').textContent='⏳ GitHub-এ আপলোড হচ্ছে...';
-
-  try{
-    let r=await fetch(`https://api.github.com/repos/${repo}/contents/${path}`,{
-      method:'PUT',
-      headers:{Authorization:'Bearer '+token,Accept:'application/vnd.github+json','Content-Type':'application/json'},
-      body:JSON.stringify({message:'Add logo',content:m[2],branch:branch})
-    });
-    if(!r.ok)throw new Error('HTTP status '+r.status);
-    let rawUrl=`https://raw.githubusercontent.com/${repo}/${branch}/${path}`;
-    $('logoUrl').value=rawUrl;$('logoPreview').src=rawUrl;
-    $('logoStatus').textContent='✅ আপলোড সফল!';
-    saveLogo();
-  }catch(e){
-    $('logoStatus').textContent='❌ আপলোড ব্যর্থ: '+e.message;
-  }
-}
-
-function searchLogo(){
-  let c=channels[+$('logoChannel').value];
-  if(c)window.open('https://www.google.com/search?tbm=isch&q='+encodeURIComponent(c.name+' official logo png'),'_blank');
-}
-
-function parseRaw(){
-  let t=$('raw').value.trim();
-  if(!t)return alert('M3U Text দিন');
-  let r=addParsed(t);
-  alert(r.added+' টি নতুন চ্যানেল যোগ করা হয়েছে');
-}
-
-function sortAZ(){channels.sort((a,b)=>a.name.localeCompare(b.name));save();render()}
-function validate(){
-  let bad=channels.filter(c=>!/^https?:\/\//i.test(c.url||''));
-  alert(bad.length?bad.length+' টি ইনভ্যালিড স্ট্রিম URL আছে':'সব ঠিক আছে');
-}
-
-function bulkReplace(){
-  let a=$('find').value, b=$('replace').value;
-  if(!a)return;
-  channels.forEach(c=>{
-    ['name','group','logo','url'].forEach(k=>{c[k]=(c[k]||'').split(a).join(b)});
-  });
-  save();render();
-}
-
-function generate(){
-  let lines=['#EXTM3U '+($('headerExtra').value.trim())];
-  channels.forEach(c=>{
-    lines.push(`#EXTINF:-1 tvg-id="${c.tvg||''}" tvg-name="${c.name||''}" tvg-logo="${c.logo||''}" group-title="${c.group||'Channels'}",${c.name}`);
-    if(c.b1)lines.push('#JP-BACKUP-1:'+c.b1);
-    if(c.b2)lines.push('#JP-BACKUP-2:'+c.b2);
-    lines.push(c.url);
-  });
-  $('output').value=lines.join('\n');
-}
-
-function copyOutput(){if(!$('output').value)generate();navigator.clipboard.writeText($('output').value).then(()=>alert('কপি করা হয়েছে'))}
-function downloadM3U(){
-  if(!$('output').value)generate();
-  let a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([$('output').value],{type:'audio/x-mpegurl'}));
-  a.download='jp_playlist.m3u';a.click();
-}
-
-async function checkDead(){
-  if(!channels.length)return;
-  $('deadProgress').textContent='যাচাই করা হচ্ছে...';
-  for(let c of channels){
-    try{
-      let res=await fetch(c.url,{method:'HEAD',mode:'no-cors'});
-      c.status='alive';
-    }catch(e){
-      c.status='dead';
-    }
-  }
-  save();render();
-  $('deadProgress').textContent='চেক সম্পন্ন হয়েছে!';
-}
-
-function resetPageAndRender(){currentPage=0;stopPlayerSilently();render()}
-$('search').oninput=resetPageAndRender;
-$('groupFilter').onchange=resetPageAndRender;
-$('onlyDead').onchange=resetPageAndRender;
-$('pageSize').onchange=resetPageAndRender;
-
-load();resetPageAndRender();
 </script>
+
 </body>
 </html>
