@@ -14,22 +14,18 @@ button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-
 .main{padding:20px;max-width:1500px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:15px}.top h1{margin:0;font-size:25px}.actions{display:flex;gap:8px;flex-wrap:wrap}
 .stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:15px}.stat{background:#0d1627;border:1px solid #1b2a42;padding:15px;border-radius:15px}.stat b{font-size:24px;display:block}.muted{color:#8fa1bc;font-size:13px}
 .card{background:#0d1627;border:1px solid #1b2a42;border-radius:16px;padding:16px;margin-bottom:15px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.builder-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.bpanel{max-height:65vh;overflow:auto}.bitem{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 4px;border-bottom:1px solid #19263b}.bitem:last-child{border-bottom:0}.bcat{width:100%;margin-top:4px;padding:6px 8px;font-size:12px}
-.playerWrap{grid-column:1/-1;background:#000;border-radius:12px;overflow:hidden;margin-top:10px;position:relative;width:100%;max-width:100%}.playerWrap video{position:absolute !important;top:0 !important;left:0 !important;display:block;object-fit:contain;background:#000}.playerClose{position:absolute;top:8px;right:8px;background:#0009;border-radius:50%;width:34px;height:34px;padding:0;font-size:16px;line-height:1;z-index:2}.playerStatus{position:absolute;left:0;right:0;bottom:0;padding:6px 10px;background:#000000cc;z-index:2}.playerStatus:empty{display:none}
-.bcat-group{margin-bottom:10px;border:1px solid #19263b;border-radius:10px;overflow:hidden}.bcat-header{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#101c30;padding:8px 10px}.bcat-header b{font-size:13px}
 label{font-size:12px;color:#9fb0ca;display:block;margin-bottom:5px}input,select,textarea{width:100%;background:#080f1c;color:#eef3ff;border:1px solid #263752;border-radius:10px;padding:11px;outline:none}textarea{min-height:180px;resize:vertical}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .channel{display:grid;grid-template-columns:28px 45px 55px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px;border-bottom:1px solid #19263b;overflow:hidden;max-width:100%}.channel:last-child{border-bottom:0}.logo{width:48px;height:48px;object-fit:contain;background:#07101d;border-radius:10px;border:1px solid #25344d}.drag{cursor:grab;color:#7587a3;font-size:20px}.pill{font-size:11px;background:#17243a;padding:5px 8px;border-radius:999px;color:#b8c7dc}.empty{padding:35px;text-align:center;color:#8fa1bc}.chk{width:20px;height:20px;accent-color:#2563eb}
 .channel .tools{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.channel .tools button{width:100%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-left:4px;padding-right:4px}
 #bulkBar{position:sticky;top:0;z-index:5;background:#0d1627;border:1px solid #2563eb;border-radius:12px;padding:10px 12px;margin-bottom:12px}
-.modal{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;padding:15px;z-index:20}.modal.show{display:flex}.modalbox{background:#0d1627;border:1px solid #2a3c59;border-radius:18px;padding:18px;width:min(650px,100%);max-height:92vh;overflow:auto}.preview{display:flex;align-items:center;gap:12px;margin-top:10px}.preview img{width:65px;height:65px;object-fit:contain;border:1px solid #263752;border-radius:10px;background:#080f1c}
-.tab{display:none}.tab.active{display:block}.drop{border:2px dashed #2c4363;padding:25px;text-align:center;border-radius:14px}.small{font-size:12px}.success{color:#61d095}.error{color:#ff8c8c}
-@media(max-width:800px){.app{display:block}.side{position:sticky;top:0;z-index:10;border-right:0;border-bottom:1px solid #1d2a40;padding:10px}.brand{display:inline-block;margin:0 15px 0 0}.nav{display:inline-flex;overflow:auto;vertical-align:middle;max-width:72%}.nav button{width:auto;white-space:nowrap}.main{padding:12px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid,.grid3{grid-template-columns:1fr}.channel{grid-template-columns:22px 22px 40px minmax(0,1fr);min-width:0}.channel .tools{grid-column:4;grid-template-columns:repeat(3,minmax(0,1fr))}.top{align-items:flex-start;flex-direction:column}#bulkBar{flex-direction:column;align-items:stretch}#bulkBar button{width:100%}.builder-grid{grid-template-columns:1fr}.bpanel{max-height:40vh}}
+.tab{display:none}.tab.active{display:block}.small{font-size:12px}
+@media(max-width:800px){.app{display:block}.side{position:sticky;top:0;z-index:10;border-right:0;border-bottom:1px solid #1d2a40;padding:10px}.brand{display:inline-block;margin:0 15px 0 0}.nav{display:inline-flex;overflow:auto;vertical-align:middle;max-width:72%}.nav button{width:auto;white-space:nowrap}.main{padding:12px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid,.grid3{grid-template-columns:1fr}.channel{grid-template-columns:22px 22px 40px minmax(0,1fr);min-width:0}.channel .tools{grid-column:4;grid-template-columns:repeat(3,minmax(0,1fr))}.top{align-items:flex-start;flex-direction:column}#bulkBar{flex-direction:column;align-items:stretch}#bulkBar button{width:100%}}
 </style>
 </head>
 <body>
 <div class="app">
 <aside class="side">
-  <div class="brand">📺 JP M3U GENERATOR <span class="pill">V2</span></div>
+  <div class="brand">📺 JP M3U GENERATOR <span class="pill">FIXED</span></div>
   <div class="nav">
     <button class="active" data-tab="editor">✏️ Editor</button>
     <button data-tab="create">➕ Create</button>
@@ -58,11 +54,8 @@ label{font-size:12px;color:#9fb0ca;display:block;margin-bottom:5px}input,select,
 </div>
 
 <script>
-/* ==========================================================================
-   JP M3U GENERATOR V2 - Pure IndexedDB Engine (Zero LocalStorage Quota Warnings)
-   ========================================================================== */
-
-var DB_NAME = 'JP_M3U_DB_V2';
+/* Hybrid Storage Engine: IndexedDB + LocalStorage Sync */
+var DB_NAME = 'JP_M3U_HYBRID_DB';
 var DB_VERSION = 1;
 var db = null;
 
@@ -72,14 +65,12 @@ var currentPage = 1;
 var pageSize = 50;
 var selectedIndices = new Set();
 
-// ১. মেমোরি পারসিস্টেন্স অন (যাতে মোবাইল ব্রাউজার ডেটা ডিলিট না করে)
 if (navigator.storage && navigator.storage.persist) {
     navigator.storage.persist();
 }
 
-// ২. IndexedDB ডাটাবেজ তৈরি
 function initDB() {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve) {
         var request = indexedDB.open(DB_NAME, DB_VERSION);
         request.onupgradeneeded = function(e) {
             var database = e.target.result;
@@ -91,7 +82,7 @@ function initDB() {
             db = e.target.result;
             resolve(db);
         };
-        request.onerror = function(e) { resolve(null); };
+        request.onerror = function() { resolve(null); };
     });
 }
 
@@ -121,11 +112,31 @@ function getFromDB(key) {
     });
 }
 
-// ৩. পেজ ও ডাটা লোড
+// LocalStorage থেকে পূর্বের সকল ডাটা নিরাপদে উদ্ধার করার ফাংশন
+function getAllStoredData() {
+    var restoredData = {};
+    try {
+        for (var i = 0; i < localStorage.length; i++) {
+            var k = localStorage.key(i);
+            var item = localStorage.getItem(k);
+            if (item) {
+                try {
+                    var parsed = JSON.parse(item);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        restoredData[k] = { title: k, channels: parsed };
+                    } else if (typeof parsed === 'object' && parsed.channels) {
+                        restoredData[k] = parsed;
+                    }
+                } catch(e) {}
+            }
+        }
+    } catch(e) {}
+    return restoredData;
+}
+
 document.addEventListener("DOMContentLoaded", async function() {
     await initDB();
     
-    // ট্যাবিং সিস্টেম
     var navButtons = document.querySelectorAll('.nav button');
     var tabs = document.querySelectorAll('.tab');
     navButtons.forEach(function(btn) {
@@ -139,16 +150,27 @@ document.addEventListener("DOMContentLoaded", async function() {
         });
     });
 
-    // ডাটা লোড
-    var saved = await getFromDB('all_playlists');
-    if (saved) {
-        playlistsData = saved;
+    var savedDB = await getFromDB('all_playlists');
+    var oldLocalStorageData = getAllStoredData();
+
+    if (savedDB && Object.keys(savedDB).length > 0) {
+        playlistsData = savedDB;
+        // পুরোনো কোনো কি বাকি থাকলে তা মার্চ করা
+        Object.keys(oldLocalStorageData).forEach(function(k) {
+            if (!playlistsData[k]) {
+                playlistsData[k] = oldLocalStorageData[k];
+            }
+        });
+    } else if (Object.keys(oldLocalStorageData).length > 0) {
+        playlistsData = oldLocalStorageData;
     } else {
         playlistsData = {
             'default_playlist': { title: 'My M3U Playlist', channels: [] }
         };
     }
-    
+
+    currentPlaylistKey = Object.keys(playlistsData)[0] || 'default_playlist';
+    saveCurrentState();
     updatePlaylistDropdown();
     renderPlaylist();
 });
@@ -158,7 +180,13 @@ function saveCurrentState() {
     if(playlistsData[currentPlaylistKey]) {
         playlistsData[currentPlaylistKey].title = curTitle;
     }
+    // IndexedDB এবং LocalStorage দুটিতেই নিরাপদে সেভ
     saveToDB('all_playlists', playlistsData);
+    try {
+        localStorage.setItem('all_playlists_backup', JSON.stringify(playlistsData));
+    } catch(e) {
+        // LocalStorage ভর্তি হয়ে গেলে ক্যাচ করবে কিন্তু এরর/পপআপ দেখাবে না
+    }
 }
 
 function updatePlaylistDropdown() {
@@ -240,7 +268,7 @@ function renderPlaylist() {
 
     var filtered = channels.filter(function(ch, idx) {
         ch._origIdx = idx;
-        var matchesSearch = !searchVal || ch.name.toLowerCase().includes(searchVal) || ch.url.toLowerCase().includes(searchVal) || (ch.group && ch.group.toLowerCase().includes(searchVal));
+        var matchesSearch = !searchVal || (ch.name && ch.name.toLowerCase().includes(searchVal)) || (ch.url && ch.url.toLowerCase().includes(searchVal)) || (ch.group && ch.group.toLowerCase().includes(searchVal));
         var matchesGroup = !groupVal || ch.group === groupVal;
         var matchesDead = !onlyDead || ch.isDead;
         return matchesSearch && matchesGroup && matchesDead;
@@ -391,7 +419,6 @@ function deleteCategory() {
     }
 }
 
-// ৪. M3U ফাইল ইমপোর্ট ইঞ্জিন (IndexedDB এ সেভ হবে)
 function importFile(e) {
     var file = e.target.files[0];
     if(!file) return;
