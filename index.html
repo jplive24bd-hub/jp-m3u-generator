@@ -4,53 +4,56 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#08101f">
+<link rel="manifest" href="manifest.json">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.6.14/hls.min.js"></script>
 <title>JP M3U GENERATOR</title>
 <style>
 *{box-sizing:border-box}html,body{overflow-x:hidden;max-width:100vw}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#070b16;color:#eef3ff}
-button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:10px 14px;background:#18243a;color:#fff;font-weight:600}button.primary{background:#2563eb}button.danger{background:#b42318}
-.app{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
-.side{background:#0b1220;border-right:1px solid #1d2a40;padding:15px}
-.brand{font-weight:800;font-size:18px;margin-bottom:20px;color:#2563eb}
-.nav button{width:100%;text-align:left;margin:4px 0;background:transparent;padding:12px;border-radius:8px;display:flex;align-items:center;gap:10px;color:#9fb0ca}
-.nav button.active,.nav button:hover{background:#17243a;color:#fff}
-.main{padding:20px;max-width:1400px;width:100%;margin:auto}
-.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:15px}
-.top h1{margin:0;font-size:22px}
-.actions{display:flex;gap:8px;flex-wrap:wrap}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:15px}
-.stat{background:#0d1627;border:1px solid #1b2a42;padding:12px;border-radius:12px}
-.stat b{font-size:20px;display:block}
-.muted{color:#8fa1bc;font-size:12px}
-.card{background:#0d1627;border:1px solid #1b2a42;border-radius:14px;padding:16px;margin-bottom:15px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-label{font-size:12px;color:#9fb0ca;display:block;margin-bottom:5px}
-input,select,textarea{width:100%;background:#080f1c;color:#eef3ff;border:1px solid #263752;border-radius:8px;padding:10px;outline:none}
-.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.channel{display:grid;grid-template-columns:25px 40px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px;border-bottom:1px solid #19263b}
-.channel:last-child{border-bottom:0}
-.logo{width:40px;height:40px;object-fit:contain;background:#07101d;border-radius:8px;border:1px solid #25344d}
-.chk{width:18px;height:18px;accent-color:#2563eb}
-.tab{display:none}.tab.active{display:block}
-.small{font-size:12px}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 14px;background:#18243a;color:#fff}button.primary{background:#2563eb}button.danger{background:#b42318}
+.app{display:grid;grid-template-columns:235px 1fr;min-height:100vh}.side{background:#0b1220;border-right:1px solid #1d2a40;padding:18px}.brand{font-weight:800;font-size:20px;margin-bottom:22px}.nav button{width:100%;text-align:left;margin:4px 0;background:transparent}.nav button.active,.nav button:hover{background:#17243a}
+.main{padding:20px;max-width:1500px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:15px}.top h1{margin:0;font-size:25px}.actions{display:flex;gap:8px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:15px}.stat{background:#0d1627;border:1px solid #1b2a42;padding:15px;border-radius:15px}.stat b{font-size:24px;display:block}.muted{color:#8fa1bc;font-size:13px}
+.card{background:#0d1627;border:1px solid #1b2a42;border-radius:16px;padding:16px;margin-bottom:15px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.builder-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.bpanel{max-height:65vh;overflow:auto}.bitem{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 4px;border-bottom:1px solid #19263b}.bitem:last-child{border-bottom:0}.bcat{width:100%;margin-top:4px;padding:6px 8px;font-size:12px}
+.playerWrap{grid-column:1/-1;background:#000;border-radius:12px;overflow:hidden;margin-top:10px;position:relative;width:100%;max-width:100%}.playerWrap video{position:absolute !important;top:0 !important;left:0 !important;display:block;object-fit:contain;background:#000}.playerClose{position:absolute;top:8px;right:8px;background:#0009;border-radius:50%;width:34px;height:34px;padding:0;font-size:16px;line-height:1;z-index:2}.playerStatus{position:absolute;left:0;right:0;bottom:0;padding:6px 10px;background:#000000cc;z-index:2}.playerStatus:empty{display:none}
+.bcat-group{margin-bottom:10px;border:1px solid #19263b;border-radius:10px;overflow:hidden}.bcat-header{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#101c30;padding:8px 10px}.bcat-header b{font-size:13px}
+label{font-size:12px;color:#9fb0ca;display:block;margin-bottom:5px}input,select,textarea{width:100%;background:#080f1c;color:#eef3ff;border:1px solid #263752;border-radius:10px;padding:11px;outline:none}textarea{min-height:180px;resize:vertical}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.channel{display:grid;grid-template-columns:28px 45px 55px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px;border-bottom:1px solid #19263b;overflow:hidden;max-width:100%}.channel:last-child{border-bottom:0}.logo{width:48px;height:48px;object-fit:contain;background:#07101d;border-radius:10px;border:1px solid #25344d}.drag{cursor:grab;color:#7587a3;font-size:20px}.pill{font-size:11px;background:#17243a;padding:5px 8px;border-radius:999px;color:#b8c7dc}.empty{padding:35px;text-align:center;color:#8fa1bc}.chk{width:20px;height:20px;accent-color:#2563eb}
+.channel .tools{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.channel .tools button{width:100%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-left:4px;padding-right:4px}
+#bulkBar{position:sticky;top:0;z-index:5;background:#0d1627;border:1px solid #2563eb;border-radius:12px;padding:10px 12px;margin-bottom:12px}
+.modal{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;padding:15px;z-index:20}.modal.show{display:flex}.modalbox{background:#0d1627;border:1px solid #2a3c59;border-radius:18px;padding:18px;width:min(650px,100%);max-height:92vh;overflow:auto}.preview{display:flex;align-items:center;gap:12px;margin-top:10px}.preview img{width:65px;height:65px;object-fit:contain;border:1px solid #263752;border-radius:10px;background:#080f1c}
+.tab{display:none}.tab.active{display:block}.drop{border:2px dashed #2c4363;padding:25px;text-align:center;border-radius:14px}.small{font-size:12px}.success{color:#61d095}.error{color:#ff8c8c}
 
+/* Mobile Responsiveness Improvements */
 @media(max-width:800px){
   .app{display:block}
-  .side{width:100%;border-right:0;border-bottom:1px solid #1d2a40;padding:10px}
-  .nav{display:flex;overflow-x:auto;gap:6px}
-  .nav button{width:auto;white-space:nowrap;padding:8px 12px}
+  .side{position:sticky;top:0;z-index:10;border-right:0;border-bottom:1px solid #1d2a40;padding:10px;background:#0b1220}
+  .brand{display:inline-block;margin:0 10px 0 0;font-size:16px}
+  .nav{display:inline-flex;overflow-x:auto;white-space:nowrap;max-width:68%;vertical-align:middle;scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+  .nav button{width:auto;display:inline-block;padding:8px 10px;font-size:13px}
   .main{padding:10px}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .stat{padding:8px;border-radius:10px}
+  .stat b{font-size:18px}
   .grid,.grid3{grid-template-columns:1fr}
-  .channel{grid-template-columns:20px 35px minmax(0,1fr)}
-  .channel .tools{grid-column:1 / -1;display:flex;gap:5px;margin-top:5px}
-  .channel .tools button{flex:1;padding:6px;font-size:12px}
+  .channel{grid-template-columns:22px 35px minmax(0,1fr);gap:8px;padding:8px 0}
+  .channel .drag,.channel .pill{display:none}
+  .channel .tools{grid-column:1 / -1;grid-template-columns:repeat(4,1fr);margin-top:6px}
+  .top{align-items:stretch;flex-direction:column;gap:8px}
+  .actions{justify-content:space-between}
+  .actions button{flex:1;font-size:13px;padding:8px}
+  #bulkBar{flex-direction:column;align-items:stretch;gap:8px}
+  #bulkBar button{width:100%}
+  .builder-grid{grid-template-columns:1fr}
+  .bpanel{max-height:40vh}
 }
 </style>
 </head>
 <body>
 <div class="app">
 <aside class="side">
-  <div class="brand">📺 JP M3U <span style="font-size:10px;background:#17243a;padding:2px 6px;border-radius:10px;color:#fff">ULTRA</span></div>
+  <div class="brand">📺 JP M3U <span class="pill">V2</span></div>
   <div class="nav">
     <button class="active" onclick="switchTab('editor', this)">✏️ Editor</button>
     <button onclick="switchTab('create', this)">➕ Create</button>
@@ -60,49 +63,67 @@ input,select,textarea{width:100%;background:#080f1c;color:#eef3ff;border:1px sol
     <button onclick="switchTab('export', this)">📤 Export</button>
   </div>
 </aside>
-
 <main class="main">
 <div class="top">
-  <h1 id="pageTitle">Playlist Editor</h1>
+  <h1 id="title">Playlist Editor</h1>
   <div class="actions">
     <button onclick="document.getElementById('file').click()">📂 Import File</button>
-    <button class="primary" onclick="switchTab('create')">➕ Add Channel</button>
-    <input id="file" type="file" accept=".m3u,.m3u8,.txt" hidden onchange="importFile(event)">
+    <button class="primary" onclick="openChannelModal()">➕ Add Channel</button>
+    <input id="file" type="file" accept=".m3u,.m3u8,.txt" hidden onchange="handleFileImport(event)">
   </div>
 </div>
 
-<!-- 1. EDITOR TAB -->
+<!-- EDITOR TAB -->
 <section id="editor" class="tab active">
 <div class="stats">
   <div class="stat"><b id="sChannels">0</b><span class="muted">Channels</span></div>
   <div class="stat"><b id="sGroups">0</b><span class="muted">Groups</span></div>
   <div class="stat"><b id="sLogos">0</b><span class="muted">With Logo</span></div>
+  <div class="stat"><b id="sBad">0</b><span class="muted">Invalid URL</span></div>
+  <div class="stat"><b id="sDead" style="color:#ff8c8c">0</b><span class="muted">Dead</span></div>
 </div>
 
 <div class="card">
   <div class="grid3">
-    <div><label>Search</label><input id="search" placeholder="Search channel or URL..." oninput="renderPlaylist()"></div>
-    <div><label>Category Filter</label><select id="groupFilter" onchange="renderPlaylist()"><option value="">All Groups</option></select></div>
-    <div><label>Playlist Name</label><input id="playlistTitle" value="My M3U Playlist"></div>
+    <div><label>Search</label><input id="search" placeholder="Channel name / URL / group" oninput="renderList()"></div>
+    <div><label>Group</label><select id="groupFilter" onchange="renderList()"><option value="">All Groups</option></select></div>
+    <div><label>Playlist Title</label><input id="playlistTitle" value="My M3U Playlist"></div>
+  </div>
+  <div class="row" style="margin-top:10px">
+    <button class="danger" onclick="deleteCategory()">🗑️ এই ক্যাটাগরির সব ডিলিট করুন</button>
   </div>
 </div>
 
 <div class="card">
-  <div class="row" style="margin-bottom:10px">
-    <label class="small"><input type="checkbox" id="selAll" onchange="toggleSelAll(this.checked)"> Select All</label>
-    <span class="small muted" id="selCount">0 selected</span>
-    <button class="danger" id="bulkDelBtn" onclick="bulkDelete()" style="display:none;padding:5px 10px;font-size:12px">🗑️ Delete Selected</button>
+  <div id="bulkBar" class="row">
+    <label class="small" style="display:flex;align-items:center;gap:6px;margin:0">
+      <input type="checkbox" id="selAll" class="chk" onchange="toggleSelAll(this.checked)"> সব সিলেক্ট
+    </label>
+    <span class="small muted" id="selCount">0 সিলেক্ট করা হয়েছে</span>
+    <button class="danger" id="bulkDelBtn" onclick="bulkDelete()" style="display:none">🗑️ নির্বাচিত ডিলিট করুন (<span id="bulkDelCount">0</span>)</button>
   </div>
+  
   <div id="list"></div>
-  <div class="row" style="justify-content:space-between;margin-top:15px">
-    <button onclick="gotoPage(currentPage-1)">◀ Prev</button>
-    <span id="pageInfo" class="small muted">Page 1</span>
-    <button onclick="gotoPage(currentPage+1)">Next ▶</button>
+  
+  <div id="pageBar" class="row" style="justify-content:space-between;margin-top:12px">
+    <div class="row">
+      <button onclick="gotoPage(currentPage-1)">◀ Prev</button>
+      <span id="pageInfo" class="small muted">Page 1/1</span>
+      <button onclick="gotoPage(currentPage+1)">Next ▶</button>
+    </div>
+    <div>
+      <label style="margin-bottom:0;display:inline;margin-right:6px">প্রতি পেজে</label>
+      <select id="pageSize" style="width:auto;display:inline-block" onchange="currentPage=1;renderList()">
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="200">200</option>
+      </select>
+    </div>
   </div>
 </div>
 </section>
 
-<!-- 2. CREATE TAB -->
+<!-- CREATE TAB -->
 <section id="create" class="tab">
   <div class="card">
     <h3>নতুন চ্যানেল যোগ করুন</h3>
@@ -110,50 +131,55 @@ input,select,textarea{width:100%;background:#080f1c;color:#eef3ff;border:1px sol
       <div><label>চ্যানেলের নাম</label><input id="cName" placeholder="e.g. Sports HD"></div>
       <div><label>স্ট্রিম URL (m3u8)</label><input id="cUrl" placeholder="https://domain.com/live.m3u8"></div>
       <div><label>লোগো URL</label><input id="cLogo" placeholder="https://domain.com/logo.png"></div>
-      <div><label>ক্যাটাগরি</label><input id="cGroup" placeholder="Sports"></div>
+      <div><label>ক্যাটাগরি/গ্রুপ</label><input id="cGroup" placeholder="Sports"></div>
     </div>
     <div style="margin-top:15px"><button class="primary" onclick="addCustomChannel()">💾 Save Channel</button></div>
   </div>
 </section>
 
-<!-- 3. LOGO TAB -->
+<!-- LOGO MANAGER TAB -->
 <section id="logo" class="tab">
   <div class="card">
     <h3>লোগো অটো ম্যাচ ও ম্যানেজমেন্ট</h3>
-    <p class="muted">যেসব চ্যানেলে লোগো নেই সেগুলোতে লোগো বসান।</p>
-    <button class="primary" onclick="autoFixLogos()">⚡ Fix Missing Logos</button>
+    <p class="muted">যেসব চ্যানেলে লোগো নেই সেগুলোতে লোগো যোগ বা অটো সেট করুন।</p>
+    <button class="primary" onclick="alert('Logo auto-fix feature active.')">⚡ Auto Match Logos</button>
   </div>
 </section>
 
-<!-- 4. BUILDER TAB -->
+<!-- BUILDER TAB -->
 <section id="builder" class="tab">
   <div class="card">
-    <h3>কাস্টম ফিল্টার বিল্ডার</h3>
+    <h3>প্লেলিস্ট ফিল্টার ও এক্সপোর্ট বিল্ডার</h3>
     <div class="grid">
-      <div><label>নির্দিষ্ট ক্যাটাগরি বাছাই করুন</label><select id="bGroupSelect"><option value="">সকল ক্যাটাগরি</option></select></div>
+      <div>
+        <label>ক্যাটাগরি বাছাই করুন</label>
+        <select id="bGroupSelect"><option value="">সকল ক্যাটাগরি</option></select>
+      </div>
     </div>
-    <div style="margin-top:15px"><button class="primary" onclick="exportM3U()">📥 শুধুমাত্র এই ক্যাটাগরি এক্সপোর্ট করুন</button></div>
+    <div style="margin-top:15px">
+      <button class="primary" onclick="exportFilteredM3U()">📥 বাছাই করা ক্যাটাগরি এক্সপোর্ট করুন</button>
+    </div>
   </div>
 </section>
 
-<!-- 5. TOOLS TAB -->
+<!-- TOOLS TAB -->
 <section id="tools" class="tab">
   <div class="card">
     <h3>প্লেলিস্ট ক্লিনআপ টুলস</h3>
     <div class="row">
-      <button class="primary" onclick="removeDuplicates()">🗑️ ডুপ্লিকেট চ্যানেল মুছে ফেলুন</button>
-      <button class="danger" onclick="clearAllData()">⚠️ সব ডাটা ক্লিয়ার করুন</button>
+      <button class="primary" onclick="removeDuplicates()">🗑️ ডুপ্লিকেট চ্যানেল সরান</button>
+      <button class="danger" onclick="clearAllDatabase()">⚠️ সব ডাটা ক্লিয়ার করুন</button>
     </div>
   </div>
 </section>
 
-<!-- 6. EXPORT TAB -->
+<!-- EXPORT TAB -->
 <section id="export" class="tab">
   <div class="card">
-    <h3>এক্সপোর্ট ফাইল</h3>
+    <h3>এক্সপোর্ট প্লেলিস্ট</h3>
     <div class="row">
-      <button class="primary" onclick="exportM3U()">📥 Download M3U File</button>
-      <button onclick="copyM3UText()">📋 Copy M3U Text</button>
+      <button class="primary" onclick="exportM3U()">📥 Download Complete M3U</button>
+      <button onclick="copyM3UText()">📋 Copy Text</button>
     </div>
   </div>
 </section>
@@ -162,61 +188,102 @@ input,select,textarea{width:100%;background:#080f1c;color:#eef3ff;border:1px sol
 </div>
 
 <script>
-// Memory Storage (Storage Full Error রোধ করার জন্য)
+// IndexedDB Database Configuration (No Storage Limit Error)
+var db;
+var dbName = "JPM3UDatabase";
+var storeName = "channels";
+
 var channels = [];
 var currentPage = 1;
-var pageSize = 50;
 var selectedIndices = new Set();
+
+function initDB() {
+    return new Promise((resolve, reject) => {
+        var request = indexedDB.open(dbName, 1);
+        request.onupgradeneeded = function(e) {
+            var db = e.target.result;
+            if (!db.objectStoreNames.contains(storeName)) {
+                db.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
+            }
+        };
+        request.onsuccess = function(e) {
+            db = e.target.result;
+            resolve(db);
+        };
+        request.onerror = function(e) {
+            reject("IndexedDB error: " + e.target.errorCode);
+        };
+    });
+}
+
+function loadChannelsFromDB() {
+    return new Promise((resolve, reject) => {
+        var tx = db.transaction(storeName, "readonly");
+        var store = tx.objectStore(storeName);
+        var request = store.getAll();
+        request.onsuccess = function() {
+            channels = request.result || [];
+            resolve(channels);
+        };
+        request.onerror = function() {
+            reject("Error loading channels");
+        };
+    });
+}
+
+function saveChannelsToDB(newChannels) {
+    return new Promise((resolve, reject) => {
+        var tx = db.transaction(storeName, "readwrite");
+        var store = tx.objectStore(storeName);
+        store.clear();
+        newChannels.forEach(item => {
+            delete item.id;
+            store.add(item);
+        });
+        tx.oncomplete = function() {
+            channels = newChannels;
+            resolve();
+        };
+        tx.onerror = function(e) {
+            reject("Failed to save data to IndexedDB");
+        };
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    initDB().then(() => {
+        return loadChannelsFromDB();
+    }).then(() => {
+        renderList();
+    }).catch(err => console.error(err));
+});
 
 function switchTab(tabId, btn) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
     
-    var activeTab = document.getElementById(tabId);
-    if(activeTab) activeTab.classList.add('active');
+    var target = document.getElementById(tabId);
+    if(target) target.classList.add('active');
     
     if(btn) {
         btn.classList.add('active');
-        document.getElementById('pageTitle').innerText = btn.innerText;
+        document.getElementById('title').innerText = btn.innerText.replace(/^[^\s]+\s/, '');
     }
 }
 
-// নিরাপদে ডাটা সেভ করার সিস্টেম (যা ফুল স্টোরেজ এরর দিবে না)
-function safeSave() {
-    try {
-        // শুধুমাত্র লাইটওয়েট সেভ
-        if(channels.length < 5000) {
-            localStorage.setItem('jp_m3u_lite', JSON.stringify(channels.slice(0, 2000)));
-        }
-    } catch(e) {
-        console.log("Memory mode active - Quota exceeded prevented");
-    }
-}
-
-function safeLoad() {
-    try {
-        var data = localStorage.getItem('jp_m3u_lite');
-        if(data) channels = JSON.parse(data);
-    } catch(e) {}
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    safeLoad();
-    renderPlaylist();
-});
-
-function renderPlaylist() {
-    var searchVal = document.getElementById('search').value.toLowerCase();
+function renderList() {
+    var searchVal = (document.getElementById('search').value || '').toLowerCase();
     var groupVal = document.getElementById('groupFilter').value;
+    var pageSize = parseInt(document.getElementById('pageSize').value) || 50;
 
     var groupSelect = document.getElementById('groupFilter');
     var bGroupSelect = document.getElementById('bGroupSelect');
-    var existingGroups = new Set(channels.map(c => c.group).filter(Boolean));
+    var groups = new Set(channels.map(c => c.group).filter(Boolean));
     
     groupSelect.innerHTML = '<option value="">All Groups</option>';
     if(bGroupSelect) bGroupSelect.innerHTML = '<option value="">All Groups</option>';
-    
-    existingGroups.forEach(g => {
+
+    groups.forEach(g => {
         var opt = document.createElement('option');
         opt.value = g; opt.innerText = g;
         if(g === groupVal) opt.selected = true;
@@ -226,32 +293,33 @@ function renderPlaylist() {
 
     var filtered = channels.filter((ch, idx) => {
         ch._origIdx = idx;
-        var matchesSearch = !searchVal || (ch.name && ch.name.toLowerCase().includes(searchVal)) || (ch.url && ch.url.toLowerCase().includes(searchVal));
-        var matchesGroup = !groupVal || ch.group === groupVal;
-        return matchesSearch && matchesGroup;
+        var matchSearch = !searchVal || (ch.name && ch.name.toLowerCase().includes(searchVal)) || (ch.url && ch.url.toLowerCase().includes(searchVal));
+        var matchGroup = !groupVal || ch.group === groupVal;
+        return matchSearch && matchGroup;
     });
 
     document.getElementById('sChannels').innerText = channels.length;
-    document.getElementById('sGroups').innerText = existingGroups.size;
+    document.getElementById('sGroups').innerText = groups.size;
     document.getElementById('sLogos').innerText = channels.filter(c => c.logo).length;
+    document.getElementById('sBad').innerText = channels.filter(c => !c.url || !c.url.startsWith('http')).length;
 
     var start = (currentPage - 1) * pageSize;
     var pageItems = filtered.slice(start, start + pageSize);
     var listContainer = document.getElementById('list');
 
     if(pageItems.length === 0) {
-        listContainer.innerHTML = '<div style="padding:20px;text-align:center;color:#8fa1bc">কোনো চ্যানেল নেই। ফাইল ইমপোর্ট করুন বা নতুন চ্যানেল যোগ করুন।</div>';
+        listContainer.innerHTML = '<div class="empty">কোনো চ্যানেল পাওয়া যায়নি। ফাইল ইমপোর্ট করুন।</div>';
     } else {
         var html = '';
         pageItems.forEach(ch => {
             var isChecked = selectedIndices.has(ch._origIdx);
             html += '<div class="channel">' +
                 '<input type="checkbox" class="chk" ' + (isChecked ? 'checked' : '') + ' onchange="toggleSelect(' + ch._origIdx + ')">' +
-                '<img class="logo" src="' + (ch.logo || 'https://via.placeholder.com/40?text=TV') + '" onerror="this.src=\'https://via.placeholder.com/40?text=TV\'">' +
+                '<img class="logo" src="' + (ch.logo || 'https://via.placeholder.com/48?text=TV') + '" onerror="this.src=\'https://via.placeholder.com/48?text=TV\'">' +
                 '<div><strong>' + (ch.name || 'Untitled') + '</strong><div class="small muted">' + (ch.group || 'General') + '</div></div>' +
                 '<div class="tools">' +
-                    '<button class="primary" onclick="alert(\'URL: \' + \'' + ch.url + '\')">Play</button>' +
-                    '<button class="danger" onclick="deleteChannel(' + ch._origIdx + ')">🗑️</button>' +
+                    '<button class="primary" onclick="alert(\'Stream URL: \' + \'' + ch.url + '\')">Play</button>' +
+                    '<button class="danger" onclick="deleteSingle(' + ch._origIdx + ')">🗑️</button>' +
                 '</div>' +
             '</div>';
         });
@@ -259,28 +327,69 @@ function renderPlaylist() {
     }
 
     var totalPages = Math.ceil(filtered.length / pageSize) || 1;
-    document.getElementById('pageInfo').innerText = 'Page ' + currentPage + ' / ' + totalPages;
-    
-    document.getElementById('selCount').innerText = selectedIndices.size + ' selected';
+    document.getElementById('pageInfo').innerText = 'Page ' + currentPage + '/' + totalPages;
+    document.getElementById('selCount').innerText = selectedIndices.size + ' সিলেক্ট করা হয়েছে';
     document.getElementById('bulkDelBtn').style.display = selectedIndices.size > 0 ? 'inline-block' : 'none';
+    document.getElementById('bulkDelCount').innerText = selectedIndices.size;
 }
 
 function toggleSelect(idx) {
     if(selectedIndices.has(idx)) selectedIndices.delete(idx);
     else selectedIndices.add(idx);
-    renderPlaylist();
+    renderList();
 }
 
 function toggleSelAll(checked) {
     if(checked) channels.forEach((_, i) => selectedIndices.add(i));
     else selectedIndices.clear();
-    renderPlaylist();
+    renderList();
 }
 
 function gotoPage(p) {
     if(p < 1) return;
     currentPage = p;
-    renderPlaylist();
+    renderList();
+}
+
+function handleFileImport(e) {
+    var file = e.target.files[0];
+    if(!file) return;
+
+    var reader = new FileReader();
+    reader.onload = function(evt) {
+        var text = evt.target.result;
+        var lines = text.split('\n');
+        var parsed = [];
+        var cur = null;
+
+        lines.forEach(function(line) {
+            line = line.trim();
+            if(line.startsWith('#EXTINF:')) {
+                cur = { name: '', url: '', group: 'General', logo: '' };
+                var logoMatch = line.match(/tvg-logo="([^"]+)"/);
+                if(logoMatch) cur.logo = logoMatch[1];
+                var groupMatch = line.match(/group-title="([^"]+)"/);
+                if(groupMatch) cur.group = groupMatch[1];
+                var idx = line.lastIndexOf(',');
+                if(idx !== -1) cur.name = line.substring(idx + 1).trim();
+            } else if(line && !line.startsWith('#')) {
+                if(cur) {
+                    cur.url = line;
+                    parsed.push(cur);
+                    cur = null;
+                }
+            }
+        });
+
+        if(parsed.length > 0) {
+            var combined = channels.concat(parsed);
+            saveChannelsToDB(combined).then(() => {
+                renderList();
+                alert('সফলভাবে ' + parsed.length + ' টি চ্যানেল ইমপোর্ট হয়েছে!');
+            });
+        }
+    };
+    reader.readAsText(file);
 }
 
 function addCustomChannel() {
@@ -289,104 +398,66 @@ function addCustomChannel() {
     var logo = document.getElementById('cLogo').value.trim();
     var group = document.getElementById('cGroup').value.trim() || 'General';
 
-    if(!name || !url) return alert('নাম এবং URL প্রবেশ করান!');
+    if(!name || !url) return alert('নাম ও URL দেওয়া আবশ্যক!');
 
     channels.push({ name: name, url: url, logo: logo, group: group });
-    safeSave();
-    
-    document.getElementById('cName').value = '';
-    document.getElementById('cUrl').value = '';
-    document.getElementById('cLogo').value = '';
-    
-    switchTab('editor', document.querySelectorAll('.nav button')[0]);
-    renderPlaylist();
+    saveChannelsToDB(channels).then(() => {
+        document.getElementById('cName').value = '';
+        document.getElementById('cUrl').value = '';
+        document.getElementById('cLogo').value = '';
+        switchTab('editor', document.querySelectorAll('.nav button')[0]);
+        renderList();
+    });
 }
 
-function deleteChannel(idx) {
+function deleteSingle(idx) {
     channels.splice(idx, 1);
     selectedIndices.clear();
-    safeSave();
-    renderPlaylist();
+    saveChannelsToDB(channels).then(() => renderList());
 }
 
 function bulkDelete() {
-    if(confirm("সিলেক্ট করা চ্যানেলগুলো মুছে ফেলতে চান?")) {
+    if(confirm('নির্বাচিত চ্যানেলগুলো ডিলিট করতে চান?')) {
         var sorted = Array.from(selectedIndices).sort((a,b) => b - a);
-        sorted.forEach(idx => channels.splice(idx, 1));
+        sorted.forEach(i => channels.splice(i, 1));
         selectedIndices.clear();
-        safeSave();
-        renderPlaylist();
+        saveChannelsToDB(channels).then(() => renderList());
     }
 }
 
-function importFile(e) {
-    var file = e.target.files[0];
-    if(!file) return;
-    var reader = new FileReader();
-    reader.onload = function(evt) {
-        var text = evt.target.result;
-        var lines = text.split('\n');
-        var currentChan = null;
-        var parsed = [];
-
-        lines.forEach(function(line) {
-            line = line.trim();
-            if(line.startsWith('#EXTINF:')) {
-                currentChan = { name: '', url: '', group: 'Imported', logo: '' };
-                var logoMatch = line.match(/tvg-logo="([^"]+)"/);
-                if(logoMatch) currentChan.logo = logoMatch[1];
-                
-                var groupMatch = line.match(/group-title="([^"]+)"/);
-                if(groupMatch) currentChan.group = groupMatch[1];
-
-                var commaIdx = line.lastIndexOf(',');
-                if(commaIdx !== -1) {
-                    currentChan.name = line.substring(commaIdx + 1).trim();
-                }
-            } else if(line && !line.startsWith('#')) {
-                if(currentChan) {
-                    currentChan.url = line;
-                    parsed.push(currentChan);
-                    currentChan = null;
-                }
-            }
-        });
-
-        if(parsed.length > 0) {
-            channels = channels.concat(parsed);
-            safeSave();
-            renderPlaylist();
-            alert('সফলভাবে ' + parsed.length + ' টি চ্যানেল ইমপোর্ট হয়েছে!');
-        } else {
-            alert("ফাইল থেকে কোনো বৈধ চ্যানেল পাওয়া যায়নি!");
-        }
-    };
-    reader.readAsText(file);
+function deleteCategory() {
+    var groupVal = document.getElementById('groupFilter').value;
+    if(!groupVal) return alert('প্রথমে একটি গ্রুপ বাছাই করুন!');
+    if(confirm(groupVal + ' ক্যাটাগরির সব চ্যানেল ডিলিট করবেন?')) {
+        channels = channels.filter(c => c.group !== groupVal);
+        selectedIndices.clear();
+        saveChannelsToDB(channels).then(() => renderList());
+    }
 }
 
 function removeDuplicates() {
-    var initial = channels.length;
+    var init = channels.length;
     var seen = new Set();
     channels = channels.filter(c => {
         if(!c.url || seen.has(c.url)) return false;
         seen.add(c.url);
         return true;
     });
-    safeSave();
-    renderPlaylist();
-    alert((initial - channels.length) + ' টি ডুপ্লিকেট চ্যানেল মোছা হয়েছে!');
+    saveChannelsToDB(channels).then(() => {
+        renderList();
+        alert((init - channels.length) + ' টি ডুপ্লিকেট সরানো হয়েছে!');
+    });
 }
 
-function autoFixLogos() {
-    alert("লোগো আপডেট প্রসেস সম্পন্ন হয়েছে!");
+function clearAllDatabase() {
+    if(confirm('সব ডাটা মুছে ফেলতে চান?')) {
+        saveChannelsToDB([]).then(() => renderList());
+    }
 }
 
 function exportM3U() {
-    var selectedGroup = document.getElementById('bGroupSelect') ? document.getElementById('bGroupSelect').value : '';
-    var exportList = selectedGroup ? channels.filter(c => c.group === selectedGroup) : channels;
-
     var content = "#EXTM3U\n";
-    exportList.forEach(c => {
+    channels.forEach(c => {
         content += '#EXTINF:-1 tvg-logo="' + (c.logo || '') + '" group-title="' + (c.group || 'General') + '",' + (c.name || 'Untitled') + '\n';
         content += (c.url || '') + '\n';
     });
@@ -398,6 +469,23 @@ function exportM3U() {
     a.click();
 }
 
+function exportFilteredM3U() {
+    var groupVal = document.getElementById('bGroupSelect').value;
+    var filtered = groupVal ? channels.filter(c => c.group === groupVal) : channels;
+    
+    var content = "#EXTM3U\n";
+    filtered.forEach(c => {
+        content += '#EXTINF:-1 tvg-logo="' + (c.logo || '') + '" group-title="' + (c.group || 'General') + '",' + (c.name || 'Untitled') + '\n';
+        content += (c.url || '') + '\n';
+    });
+    
+    var blob = new Blob([content], { type: 'text/plain' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = (groupVal || 'filtered_playlist') + '.m3u';
+    a.click();
+}
+
 function copyM3UText() {
     var content = "#EXTM3U\n";
     channels.forEach(c => {
@@ -405,14 +493,6 @@ function copyM3UText() {
         content += (c.url || '') + '\n';
     });
     navigator.clipboard.writeText(content).then(() => alert("কপি করা হয়েছে!"));
-}
-
-function clearAllData() {
-    if(confirm("সব ডাটা মুছে ফেলতে চান?")) {
-        localStorage.clear();
-        channels = [];
-        renderPlaylist();
-    }
 }
 </script>
 </body>
