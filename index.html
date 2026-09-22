@@ -203,9 +203,10 @@ if(st)st.textContent='⏳ '+src.label+' লোড হচ্ছে...';
 if(hlsInstance){try{hlsInstance.destroy()}catch(e){}hlsInstance=null}
 watchdog=setTimeout(()=>{if(myToken===token)tryNext()},5000);
 if(window.Hls&&Hls.isSupported()){
-hlsInstance=new Hls({manifestLoadingMaxRetry:1,manifestLoadingRetryDelay:250,levelLoadingMaxRetry:1,levelLoadingRetryDelay:250,fragLoadingMaxRetry:1,fragLoadingRetryDelay:250});
+hlsInstance=new Hls({enableWorker:true,lowLatencyMode:true,backBufferLength:0,maxBufferLength:6,maxMaxBufferLength:12,maxBufferHole:0.5,liveSyncDurationCount:1,manifestLoadingMaxRetry:1,manifestLoadingRetryDelay:150,levelLoadingMaxRetry:1,levelLoadingRetryDelay:150,fragLoadingMaxRetry:1,fragLoadingRetryDelay:150,capLevelToPlayerSize:true});
 hlsInstance.loadSource(src.url);
 hlsInstance.attachMedia(video);
+try{hlsInstance.startLoad(-1)}catch(e){}
 hlsInstance.on(Hls.Events.MANIFEST_PARSED,()=>{if(myToken!==token)return;clearWatchdog();pinSize();if(st)st.textContent=sources.length>1?'▶️ '+src.label+' চলছে':'';video.play().catch(()=>{})});
 hlsInstance.on(Hls.Events.ERROR,(evt,data)=>{if(myToken===token&&data&&data.fatal)tryNext()});
 }else if(video.canPlayType('application/vnd.apple.mpegurl')){
